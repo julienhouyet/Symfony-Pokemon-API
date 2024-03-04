@@ -1,0 +1,18 @@
+# Ignore les fichiers générés par Node.js
+/node_modules
+
+# Ignore les fichiers de sauvegarde système de macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+__MACOSX
+
+# Ignore les fichiers de cache Symfony
+/var
+/vendor
+/bin
+/public/bundles
