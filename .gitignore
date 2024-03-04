@@ -11,8 +11,12 @@ Icon
 .Trashes
 __MACOSX
 
-# Ignore les fichiers de cache Symfony
-/var
-/vendor
-/bin
-/public/bundles
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
