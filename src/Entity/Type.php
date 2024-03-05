@@ -2,25 +2,41 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\TypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Pokemon;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TypeRepository;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
-#[ApiResource]
 class Type
 {
+
+	/**
+	 * The ID of the type
+	 */
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column]
 	private ?int $id = null;
 
+	/**
+	 * The Name of the type
+	 */
 	#[ORM\Column(length: 255)]
 	private ?string $name = null;
 
+	/**
+	 * The Pokemons with this type
+	 */
 	#[ORM\ManyToMany(targetEntity: Pokemon::class, mappedBy: 'types')]
+	#[Groups(['pokemon:read'])]
 	private Collection $pokemons;
 
 	public function getId(): ?int

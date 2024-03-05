@@ -9,29 +9,49 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PokemonRepository;
 use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 #[ApiResource]
 class Pokemon
 {
+	/**
+	 * The ID of the Pokemon
+	 */
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column]
 	private ?int $id = null;
 
+	/**
+	 * The Name of the Pokemon
+	 */
 	#[ORM\Column(length: 255)]
 	private ?string $name = null;
 
+	/**
+	 * The Height of the Pokemon
+	 */
 	#[ORM\Column]
 	private ?float $height = null;
 
+	/**
+	 * The Weight of the Pokemon
+	 */
 	#[ORM\Column]
 	private ?float $weight = null;
 
+	/**
+	 * The Base Experience of the Pokemon
+	 */
 	#[ORM\Column]
 	private ?int $baseExperience = null;
 
+	/**
+	 * The Types of the Pokemon
+	 */
 	#[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'pokemons')]
+	#[Groups(['pokemon:read'])]
 	private Collection $types;
 
 	public function __construct()
