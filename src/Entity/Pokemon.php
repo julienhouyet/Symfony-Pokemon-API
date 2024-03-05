@@ -2,18 +2,36 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Get;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PokemonRepository;
 use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 #[ApiResource(
-	description: 'The Pokemon List'
+	shortName: 'Pokemon',
+	description: 'The Pokemon List',
+	operations: [
+		new Get(uriTemplate: '/pokemon/{id}'),
+		new GetCollection(uriTemplate: '/pokemon'),
+		new Post(uriTemplate: '/pokemon/{id}'),
+		new Put(uriTemplate: '/pokemon/{id}'),
+		new Patch(uriTemplate: '/pokemon/{id}'),
+		new Delete(uriTemplate: '/pokemon/{id}'),
+	]
 )]
 class Pokemon
 {
@@ -53,7 +71,6 @@ class Pokemon
 	 * The Types of the Pokemon
 	 */
 	#[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'pokemons')]
-	#[Groups(['pokemon:read'])]
 	private Collection $types;
 
 	public function __construct()

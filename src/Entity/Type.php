@@ -3,20 +3,33 @@
 namespace App\Entity;
 
 use App\Entity\Pokemon;
-use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TypeRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
 #[ApiResource(
-	description: 'Different types of Pokemon'
+	shortName: 'Type',
+	description: 'Different types of Pokemon',
+	operations: [
+		new Get(),
+		new GetCollection(),
+		new Post(),
+		new Put(),
+		new Patch(),
+		new Delete()
+	]
 )]
 class Type
 {
@@ -39,7 +52,6 @@ class Type
 	 * The Pokemons with this type
 	 */
 	#[ORM\ManyToMany(targetEntity: Pokemon::class, mappedBy: 'types')]
-	#[Groups(['pokemon:read'])]
 	private Collection $pokemons;
 
 	public function getId(): ?int
@@ -60,7 +72,7 @@ class Type
 	}
 
 	/**
-	 * @return Collection<int, Post>
+	 * @return Collection<int, Pokemon>
 	 */
 	public function getPokemons(): Collection
 	{
