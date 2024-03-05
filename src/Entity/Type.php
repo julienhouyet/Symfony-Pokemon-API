@@ -15,6 +15,9 @@ use ApiPlatform\Serializer\Filter\PropertyFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
+#[ApiResource(
+	description: 'Different types of Pokemon'
+)]
 class Type
 {
 

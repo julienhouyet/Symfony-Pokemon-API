@@ -12,7 +12,9 @@ use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
-#[ApiResource]
+#[ApiResource(
+	description: 'The Pokemon List'
+)]
 class Pokemon
 {
 	/**
