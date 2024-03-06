@@ -29,7 +29,9 @@ use ApiPlatform\Metadata\Put;
 		new Put(),
 		new Patch(),
 		new Delete()
-	]
+	],
+	normalizationContext: ['groups' => ['type:read']],
+	denormalizationContext: ['groups' => ['type:write']],
 )]
 class Type
 {
@@ -46,12 +48,14 @@ class Type
 	 * The Name of the type
 	 */
 	#[ORM\Column(length: 255)]
+	#[Groups(['type:read', 'type:write', 'pokemon:read'])]
 	private ?string $name = null;
 
 	/**
 	 * The Pokemons with this type
 	 */
 	#[ORM\ManyToMany(targetEntity: Pokemon::class, mappedBy: 'types')]
+	#[Groups(['type:read', 'type:write'])]
 	private Collection $pokemons;
 
 	public function getId(): ?int

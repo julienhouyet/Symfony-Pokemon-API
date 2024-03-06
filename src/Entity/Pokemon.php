@@ -31,7 +31,9 @@ use ApiPlatform\Metadata\ApiFilter;
 		new Put(uriTemplate: '/pokemon/{id}'),
 		new Patch(uriTemplate: '/pokemon/{id}'),
 		new Delete(uriTemplate: '/pokemon/{id}'),
-	]
+	],
+	normalizationContext: ['groups' => ['pokemon:read']],
+	denormalizationContext: ['groups' => ['pokemon:write']],
 )]
 class Pokemon
 {
@@ -47,30 +49,35 @@ class Pokemon
 	 * The Name of the Pokemon
 	 */
 	#[ORM\Column(length: 255)]
+	#[Groups(['pokemon:read', 'pokemon:write', 'type:read'])]
 	private ?string $name = null;
 
 	/**
 	 * The Height of the Pokemon
 	 */
 	#[ORM\Column]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
 	private ?float $height = null;
 
 	/**
 	 * The Weight of the Pokemon
 	 */
 	#[ORM\Column]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
 	private ?float $weight = null;
 
 	/**
 	 * The Base Experience of the Pokemon
 	 */
 	#[ORM\Column]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
 	private ?int $baseExperience = null;
 
 	/**
 	 * The Types of the Pokemon
 	 */
 	#[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'pokemons')]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
 	private Collection $types;
 
 	public function __construct()
