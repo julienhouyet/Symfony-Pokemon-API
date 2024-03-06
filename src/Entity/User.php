@@ -11,8 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -25,8 +28,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 		new Put(),
 		new Patch(),
 		new Delete()
-	]
+	],
+	normalizationContext: ['groups' => ['user:read']],
+	denormalizationContext: ['groups' => ['user:write']],
 )]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	/**
@@ -37,7 +44,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 180)]
+	#[ORM\Column(length: 180, unique: true)]
+	#[Groups(['user:read', 'user:write'])]
+	#[Assert\NotBlank]
+	#[Assert\Email]
 	private ?string $email = null;
 
 	/**
@@ -50,9 +60,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @var string The hashed password
 	 */
 	#[ORM\Column]
+	#[Groups(['user:write'])]
 	private ?string $password = null;
 
 	#[ORM\Column(length: 255, unique: true)]
+	#[Groups(['user:read', 'user:write'])]
+	#[Assert\NotBlank]
 	private ?string $username = null;
 
 	public function getId(): ?int
