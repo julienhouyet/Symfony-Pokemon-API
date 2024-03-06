@@ -2,15 +2,36 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ApiResource(
+	shortName: 'User',
+	operations: [
+		new Get(),
+		new GetCollection(),
+		new Post(),
+		new Put(),
+		new Patch(),
+		new Delete()
+	]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+	/**
+	 * The ID of the user
+	 */
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column]
