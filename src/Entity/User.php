@@ -33,6 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	],
 	normalizationContext: ['groups' => ['user:read']],
 	denormalizationContext: ['groups' => ['user:write']],
+	security: 'is_granted("ROLE_ADMIN")'
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username.')]
@@ -123,6 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		} else {
 			$roles = $this->accessTokenScopes;
 		}
+
 		// guarantee every user at least has ROLE_USER
 		$roles[] = 'ROLE_USER';
 		return array_unique($roles);
