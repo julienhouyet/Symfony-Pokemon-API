@@ -11,13 +11,13 @@ class ApiToken
 	private const PERSONAL_ACCESS_TOKEN_PREFIX = 'pcp_';
 
 	public const SCOPE_USER_EDIT = 'ROLE_USER_EDIT';
-	public const SCOPE_POKEMON_CREATE = 'ROLE_POKEMON_CREATE';
-	public const SCOPE_POKEMON_EDIT = 'ROLE_POKEMON_EDIT';
-	public const SCOPES = [
-		self::SCOPE_USER_EDIT => 'Edit User',
-		self::SCOPE_POKEMON_CREATE => 'Create Pokemon',
-		self::SCOPE_POKEMON_EDIT => 'Edit Pokemon',
-	];
+	// public const SCOPE_POKEMON_CREATE = 'ROLE_POKEMON_CREATE';
+	// public const SCOPE_POKEMON_EDIT = 'ROLE_POKEMON_EDIT';
+	// public const SCOPES = [
+	// 	self::SCOPE_USER_EDIT => 'Edit User',
+	// 	self::SCOPE_POKEMON_CREATE => 'Create Pokemon',
+	// 	self::SCOPE_POKEMON_EDIT => 'Edit Pokemon',
+	// ];
 
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
