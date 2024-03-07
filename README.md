@@ -32,12 +32,21 @@ Coming soon.
 
 ##  :camera: Gallery
 
-Coming soon.
+<div align="center">
+  <a href="https://i.postimg.cc/59FNGTy9/Screenshot-2024-03-07-at-08-07-11.png" target="_blank">
+    <img src="https://i.postimg.cc/59FNGTy9/Screenshot-2024-03-07-at-08-07-11.png" width="45%">
+  </a>
+  <a href="https://i.postimg.cc/J4V4WxHN/Screenshot-2024-03-07-at-09-22-46.png" target="_blank">
+    <img src="https://i.postimg.cc/J4V4WxHN/Screenshot-2024-03-07-at-09-22-46.png" width="45%">
+  </a>
+</div>
+
 
 ## :hammer_and_wrench: Built With
 
 - [Symfony](https://symfony.com/) - The programming language used
 - [API Platform](https://api-platform.com/) - A powerful API framework for Symfony
+- [Vue](https://vuejs.org/) - The Progressive JavaScript Framework
 
 ## :label: Versioning
 

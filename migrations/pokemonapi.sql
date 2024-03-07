@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql:3306
--- Généré le : mar. 05 mars 2024 à 15:34
+-- Généré le : jeu. 07 mars 2024 à 08:25
 -- Version du serveur : 8.3.0
 -- Version de PHP : 8.2.8
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
   `execution_time` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
@@ -40,7 +40,8 @@ CREATE TABLE `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20240305135723', '2024-03-05 13:57:28', 15),
 ('DoctrineMigrations\\Version20240305140751', '2024-03-05 14:07:57', 34),
-('DoctrineMigrations\\Version20240305151023', '2024-03-05 15:10:26', 104);
+('DoctrineMigrations\\Version20240305151023', '2024-03-05 15:10:26', 104),
+('DoctrineMigrations\\Version20240306072321', '2024-03-06 07:23:30', 20);
 
 -- --------------------------------------------------------
 
@@ -50,7 +51,7 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 
 CREATE TABLE `pokemon` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `height` double NOT NULL,
   `weight` double NOT NULL,
   `base_experience` int NOT NULL
@@ -96,7 +97,7 @@ INSERT INTO `pokemon_type` (`pokemon_id`, `type_id`) VALUES
 
 CREATE TABLE `type` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+  `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
@@ -106,6 +107,27 @@ CREATE TABLE `type` (
 INSERT INTO `type` (`id`, `name`) VALUES
 (1, 'grass'),
 (2, 'poison');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int NOT NULL,
+  `email` varchar(180) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `roles` json NOT NULL,
+  `password` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `username`) VALUES
+(1, 'admin@pokemonmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$g7PW6GZ3GAFQ9l7DFN5OHeHYZ0YHc8R4yR86NMrkv6/4Q6F3/TANS', 'admin');
 
 --
 -- Index pour les tables déchargées
@@ -138,6 +160,14 @@ ALTER TABLE `type`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8D93D649F85E0677` (`username`),
+  ADD UNIQUE KEY `UNIQ_IDENTIFIER_EMAIL` (`email`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -152,6 +182,12 @@ ALTER TABLE `pokemon`
 --
 ALTER TABLE `type`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Contraintes pour les tables déchargées
