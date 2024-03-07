@@ -9,10 +9,10 @@ Encore.setOutputPath('public/build/')
 	.addEntry('app', './assets/app.js')
 	.splitEntryChunks()
 
-    .enableVueLoader()
+	.enableVueLoader()
 
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/controllers.json')
+	// enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
+	.enableStimulusBridge('./assets/controllers.json')
 	.enableSingleRuntimeChunk()
 	.cleanupOutputBeforeBuild()
 	.enableBuildNotifications()
@@ -24,6 +24,7 @@ Encore.setOutputPath('public/build/')
 	})
 	.enableSassLoader()
 	.enableTypeScriptLoader()
+	.enablePostCssLoader()
 	.enableVueLoader();
 
 module.exports = Encore.getWebpackConfig();
