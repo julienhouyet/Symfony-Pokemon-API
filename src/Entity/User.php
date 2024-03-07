@@ -37,6 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username.')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	/**
@@ -75,8 +76,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Assert\NotBlank]
 	private ?string $username = null;
 
-	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class)]
+	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist'])]
 	private Collection $apiTokens;
+
+	#[ORM\PrePersist]
+	public function generateApiTokenOnCreate(): void
+	{
+		$apiToken = new ApiToken();
+		$apiToken->setOwnedBy($this);
+
+		$expiresAt = new \DateTimeImmutable();
+		$newExpireAt = $expiresAt->modify('+1 month');
+
+		$apiToken->setExpiresAt($newExpireAt);
+
+		$this->addApiToken($apiToken);
+	}
 
 	public function __construct()
 	{
