@@ -5,7 +5,7 @@
 		</div>
 		<div class="flex-auto flex flex-col sm:flex-row justify-center px-8">
 			<LoginForm v-on:user-authenticated="onUserAuthenticated"></LoginForm>
-			<div class="bg-zinc-200 shadow-md rounded sm:ml-3 px-8 pt-8 pb-8 mb-4 sm:w-1/2 md:w-1/3 text-center">
+			<div class="bg-zinc-100 shadow-sm rounded sm:ml-3 px-8 pt-8 pb-8 mb-4 sm:w-1/2 md:w-1/3 text-center">
 				<div v-if="user">
 					Authenticated as: <strong>{{ user.username }}</strong>
 
