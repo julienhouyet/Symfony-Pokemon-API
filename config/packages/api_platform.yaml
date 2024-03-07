@@ -5,6 +5,7 @@ api_platform:
     jsonld: ["application/ld+json"]
   swagger:
     api_keys:
+      # overridden in OpenApiFactoryDecorator
       access_token:
         name: Authorization
         type: header
