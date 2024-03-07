@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div {{ vue_component('PokemonConnectApp', { entrypoint: path('api_entrypoint') } ) }}></div>
+	<div {{ vue_component('PokemonConnectApp', { entrypoint: path('api_entrypoint'), user: userData } ) }}></div>
 {% endblock %}
