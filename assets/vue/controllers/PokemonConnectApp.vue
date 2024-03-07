@@ -29,7 +29,7 @@ import pokeballLogoPath from '../../images/pokeball-logo.svg';
 import pokemonBackgroundPath from '../../images/pokemon-background2.png';
 
 defineProps(['entrypoint']);
-const user = ref(null);
+const user = ref(window.user);
 
 const onUserAuthenticated = async (userUri) => {
 	const response = await fetch(userUri);
