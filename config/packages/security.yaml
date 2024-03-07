@@ -9,6 +9,8 @@ security:
       entity:
         class: App\Entity\User
         property: email
+  role_hierarchy:
+    ROLE_FULL_USER: [ROLE_USER_EDIT, ROLE_POKEMON_CREATE, ROLE_POKEMON_EDIT]
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
