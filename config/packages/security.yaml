@@ -9,6 +9,8 @@ security:
       entity:
         class: App\Entity\User
         property: email
+  role_hierarchy:
+    ROLE_FULL_USER: [ROLE_USER_EDIT]
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,6 +24,8 @@ security:
         password_path: password
       logout:
         path: app_logout
+      access_token:
+        token_handler: App\Security\ApiTokenHandler
 
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall

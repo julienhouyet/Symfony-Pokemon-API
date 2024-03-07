@@ -3,16 +3,22 @@ api_platform:
   version: 0.2.0
   formats:
     jsonld: ["application/ld+json"]
-  docs_formats:
-    jsonld: ["application/ld+json"]
-    jsonopenapi: ["application/vnd.openapi+json"]
-    html: ["text/html"]
-  defaults:
-    stateless: true
-    cache_headers:
-      vary: ["Content-Type", "Authorization", "Origin"]
-    extra_properties:
-      standard_put: true
-      rfc_7807_compliant_errors: true
-  event_listeners_backward_compatibility_layer: false
-  keep_legacy_inflector: false
+  swagger:
+    api_keys:
+      # overridden in OpenApiFactoryDecorator
+      access_token:
+        name: Authorization
+        type: header
+  # docs_formats:
+  #   jsonld: ["application/ld+json"]
+  #   jsonopenapi: ["application/vnd.openapi+json"]
+  #   html: ["text/html"]
+  # defaults:
+  #   stateless: true
+  #   cache_headers:
+  #     vary: ["Content-Type", "Authorization", "Origin"]
+  #   extra_properties:
+  #     standard_put: true
+  #     rfc_7807_compliant_errors: true
+  # event_listeners_backward_compatibility_layer: false
+  # keep_legacy_inflector: false

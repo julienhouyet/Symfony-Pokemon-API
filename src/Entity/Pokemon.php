@@ -26,8 +26,14 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 	shortName: 'Pokemon',
 	description: 'The Pokemon List',
 	operations: [
-		new Get(uriTemplate: '/pokemon/{id}'),
-		new GetCollection(uriTemplate: '/pokemon'),
+		new Get(
+			uriTemplate: '/pokemon/{id}',
+			security: 'is_granted("PUBLIC_ACCESS")'
+		),
+		new GetCollection(
+			uriTemplate: '/pokemon',
+			security: 'is_granted("PUBLIC_ACCESS")'
+		),
 		new Post(uriTemplate: '/pokemon/{id}'),
 		new Put(uriTemplate: '/pokemon/{id}'),
 		new Patch(uriTemplate: '/pokemon/{id}'),
@@ -35,6 +41,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 	],
 	normalizationContext: ['groups' => ['pokemon:read']],
 	denormalizationContext: ['groups' => ['pokemon:write']],
+	security: 'is_granted("ROLE_ADMIN")'
 )]
 #[ApiFilter(SearchFilter::class, properties: [
 	'types.name' => 'partial',
