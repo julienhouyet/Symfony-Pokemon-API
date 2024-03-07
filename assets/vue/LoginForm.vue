@@ -12,7 +12,7 @@
 				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				:class="{ 'border-red-500': error }" id="email" v-model="email" type="email" placeholder="Email">
 			<p class="mt-1 text-xs text-gray-500">Try: <a href="#" tabindex="-1"
-					@click.prevent="loadEmailField">bernie@dragonmail.com</a></p>
+					@click.prevent="loadEmailField">admin@pokemonmail.com</a></p>
 		</div>
 		<div class="mb-6">
 			<label class="block text-gray-700 text-sm font-bold mb-2" for="password">
@@ -23,7 +23,7 @@
 				:class="{ 'border-red-500': error }" id="password" v-model="password" type="password"
 				placeholder="Password">
 			<p class="mt-1 text-xs text-gray-500">Try: <a href="#" tabindex="-1"
-					@click.prevent="loadPasswordField">roar</a></p>
+					@click.prevent="loadPasswordField">root</a></p>
 		</div>
 		<div class="flex items-center justify-between">
 			<button
@@ -46,10 +46,10 @@ const isLoading = ref(false);
 const emit = defineEmits(['user-authenticated']);
 
 const loadEmailField = () => {
-	email.value = 'bernie@dragonmail.com';
+	email.value = 'admin@pokemonmail.com';
 };
 const loadPasswordField = () => {
-	password.value = 'roar';
+	password.value = 'root';
 };
 
 const handleSubmit = async () => {
@@ -72,7 +72,7 @@ const handleSubmit = async () => {
 	if (!response.ok) {
 		const data = await response.json();
 		console.log(data);
-		// TODO: set error
+		error.value = data.error;
 
 		return;
 	}
