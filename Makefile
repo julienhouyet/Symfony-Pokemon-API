@@ -1,4 +1,4 @@
-.PHONY: run re stop
+.PHONY: run re stop test fixture
 
 run:
 	php bin/console cache:clear
@@ -12,6 +12,9 @@ re:
 
 stop:
 	docker-compose -f docker/dev/docker-compose.yml down
+
+fixture:
+	php bin/console doctrine:fixtures:load
 
 test:
 	php ./vendor/bin/phpunit
