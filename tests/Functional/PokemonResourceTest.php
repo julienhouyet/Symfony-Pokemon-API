@@ -15,6 +15,8 @@ class PokemonResourceTest extends KernelTestCase
 	{
 		$this->browser()
 			->get('/api/pokemon')
-			->dump();
+			->dump()
+			->assertJson()
+			->assertJsonMatches('"hydra:totalItems"', 0);
 	}
 }
