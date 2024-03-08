@@ -1,7 +1,7 @@
 # Symfony-Pokemon-API
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.1.0-blue.svg">
+  <img src="https://img.shields.io/badge/version-0.3.0-blue.svg">
 </p>
 
 # Introduction

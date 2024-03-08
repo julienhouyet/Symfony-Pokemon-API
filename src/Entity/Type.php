@@ -23,15 +23,15 @@ use ApiPlatform\Metadata\Put;
 	shortName: 'Type',
 	description: 'Different types of Pokemon',
 	operations: [
-		new Get(),
-		new GetCollection(),
+		new Get(security: 'is_granted("PUBLIC_ACCESS")'),
+		new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
 		new Post(),
 		new Put(),
 		new Patch(),
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['type:read']],
-	denormalizationContext: ['groups' => ['type:write']],
+	denormalizationContext: ['groups' => ['type:write']]
 )]
 class Type
 {

@@ -7,6 +7,8 @@ use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
@@ -31,9 +33,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 	],
 	normalizationContext: ['groups' => ['user:read']],
 	denormalizationContext: ['groups' => ['user:write']],
+	security: 'is_granted("ROLE_ADMIN")'
 )]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username.')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	/**
@@ -57,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups(['user:read'])]
 	private array $roles = [];
 
+	/* Scopes given during API authentication */
+	private ?array $accessTokenScopes = null;
+
 	/**
 	 * @var string The hashed password
 	 */
@@ -68,6 +75,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups(['user:read', 'user:write'])]
 	#[Assert\NotBlank]
 	private ?string $username = null;
+
+	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist'])]
+	private Collection $apiTokens;
+
+	#[ORM\PrePersist]
+	public function generateApiTokenOnCreate(): void
+	{
+		$apiToken = new ApiToken();
+		$apiToken->setOwnedBy($this);
+
+		$expiresAt = new \DateTimeImmutable();
+		$newExpireAt = $expiresAt->modify('+1 month');
+
+		$apiToken->setExpiresAt($newExpireAt);
+
+		$this->addApiToken($apiToken);
+	}
+
+	public function __construct()
+	{
+		$this->apiTokens = new ArrayCollection();
+	}
 
 	public function getId(): ?int
 	{
@@ -104,9 +133,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function getRoles(): array
 	{
 		$roles = $this->roles;
+
+		// Scopes at configure later
+		// if (null === $this->accessTokenScopes) {
+		// 	// logged in via the full user mechanism
+		// 	$roles = $this->roles;
+		// 	$roles[] = 'ROLE_FULL_USER';
+		// } else {
+		// 	$roles = $this->accessTokenScopes;
+		// }
+
 		// guarantee every user at least has ROLE_USER
 		$roles[] = 'ROLE_USER';
-
 		return array_unique($roles);
 	}
 
@@ -154,5 +192,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		$this->username = $username;
 
 		return $this;
+	}
+
+	/**
+	 * @return Collection<int, ApiToken>
+	 */
+	public function getApiTokens(): Collection
+	{
+		return $this->apiTokens;
+	}
+
+	public function addApiToken(ApiToken $apiToken): static
+	{
+		if (!$this->apiTokens->contains($apiToken)) {
+			$this->apiTokens->add($apiToken);
+			$apiToken->setOwnedBy($this);
+		}
+
+		return $this;
+	}
+
+	public function removeApiToken(ApiToken $apiToken): static
+	{
+		if ($this->apiTokens->removeElement($apiToken)) {
+			// set the owning side to null (unless already changed)
+			if ($apiToken->getOwnedBy() === $this) {
+				$apiToken->setOwnedBy(null);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getValidTokenStrings(): array
+	{
+		return $this->getApiTokens()
+			->filter(fn (ApiToken $token) => $token->isValid())
+			->map(fn (ApiToken $token) => $token->getToken())
+			->toArray();
+	}
+
+	public function markAsTokenAuthenticated(array $scopes)
+	{
+		$this->accessTokenScopes = $scopes;
 	}
 }
