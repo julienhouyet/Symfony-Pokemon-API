@@ -78,7 +78,7 @@ final class PokemonFactory extends ModelFactory
 		return [
 			'baseExperience' => self::faker()->randomNumber(3, 0),
 			'height' => self::faker()->randomFloat(3, 0, 999.99),
-			'name' => self::faker()->unique()->randomElement($uniquePokemons),
+			'name' => self::faker()->randomElement($uniquePokemons),
 			'weight' => self::faker()->randomFloat(3, 0, 999.99),
 		];
 	}

@@ -2,18 +2,28 @@
 
 namespace App\Tests\Functional;
 
-use Zenstruck\Browser\Json;
 use App\Factory\TypeFactory;
 use App\Factory\UserFactory;
 use App\Factory\PokemonFactory;
 use Zenstruck\Browser\HttpOptions;
-use Zenstruck\Browser\Test\HasBrowser;
+use Doctrine\ORM\EntityManagerInterface;
 use Zenstruck\Foundry\Test\ResetDatabase;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class PokemonResourceTest extends ApiTestCase
 {
 	use ResetDatabase;
+
+	private $adminUser;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+
+		$this->adminUser = UserFactory::createOne([
+			'roles' => ['ROLE_ADMIN'],
+			'password' => 'pass',
+		])->object();
+	}
 
 	public function testGetCollectionOfPokemons(): void
 	{
@@ -21,7 +31,6 @@ class PokemonResourceTest extends ApiTestCase
 
 		$this->browser()
 			->get('/api/types')
-			->dump()
 			->assertJson()
 			->assertJsonMatches('"hydra:totalItems"', 10);
 
@@ -33,7 +42,6 @@ class PokemonResourceTest extends ApiTestCase
 
 		$this->browser()
 			->get('/api/pokemons')
-			->dump()
 			->assertJson()
 			->assertJsonMatches('"hydra:totalItems"', 40);
 	}
@@ -44,40 +52,33 @@ class PokemonResourceTest extends ApiTestCase
 
 		$this->browser()
 			->get('/api/pokemons/' . $pokemon->getId())
-			->dump()
 			->assertJson()
 			->assertStatus(200);
 	}
 
 	public function testPostToPokemon(): void
 	{
-		$user = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		]);
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json(['']))
-			->dump()
 			->assertStatus(500);
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json([
 				'name' => 'pikachu',
 				'height' => 1.23,
 				'weight' => 2.34,
 				'baseExperience' => 64,
 			]))
-			->dump()
 			->assertStatus(201)
 			->assertJsonMatches('name', 'pikachu');
 
 		$type = TypeFactory::createOne();
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json([
 				'name' => 'charmander',
 				'height' => 0.6,
@@ -85,17 +86,12 @@ class PokemonResourceTest extends ApiTestCase
 				'baseExperience' => 62,
 				'types' => ['/api/types/' . $type->getId()],
 			]))
-			->dump()
 			->assertStatus(201)
 			->assertJsonMatches('name', 'charmander');
 	}
 
 	public function testPutPokemon(): void
 	{
-		$user = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		]);
 
 		$pokemon = PokemonFactory::createOne([
 			'name' => 'bulbasaur',
@@ -105,7 +101,7 @@ class PokemonResourceTest extends ApiTestCase
 		]);
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->put('/api/pokemons/' . $pokemon->getId(), HttpOptions::json([
 				'name' => 'ivysaur',
 				'height' => 1.0,
@@ -118,10 +114,6 @@ class PokemonResourceTest extends ApiTestCase
 
 	public function testPatchPokemon(): void
 	{
-		$user = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		]);
 
 		$pokemon = PokemonFactory::createOne([
 			'name' => 'charmander',
@@ -131,7 +123,7 @@ class PokemonResourceTest extends ApiTestCase
 		]);
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->patch('/api/pokemons/' . $pokemon->getId(), [
 				'headers' => [
 					'Content-Type' => 'application/merge-patch+json',
@@ -140,27 +132,22 @@ class PokemonResourceTest extends ApiTestCase
 					'baseExperience' => 62,
 				],
 			])
-			->dump()
 			->assertStatus(200)
 			->assertJsonMatches('baseExperience', 62);
 	}
 
 	public function testDeletePokemon(): void
 	{
-		$user = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		]);
 
 		$pokemon = PokemonFactory::createOne();
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->delete('/api/pokemons/' . $pokemon->getId())
 			->assertStatus(204);
 
 		$this->browser()
-			->actingAs($user)
+			->actingAs($this->adminUser)
 			->get('/api/pokemons/' . $pokemon->getId())
 			->assertStatus(404);
 	}

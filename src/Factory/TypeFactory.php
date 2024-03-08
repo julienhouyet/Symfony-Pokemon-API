@@ -52,7 +52,7 @@ final class TypeFactory extends ModelFactory
 		$uniqueTypes = array_slice(array_unique(self::TYPE_NAMES), 0, count(array_unique(self::TYPE_NAMES)));
 
 		return [
-			'name' => self::faker()->unique()->randomElement($uniqueTypes),
+			'name' => self::faker()->randomElement($uniqueTypes),
 		];
 	}
 
