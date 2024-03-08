@@ -12,3 +12,6 @@ re:
 
 stop:
 	docker-compose -f docker/dev/docker-compose.yml down
+
+test:
+	php ./vendor/bin/phpunit
