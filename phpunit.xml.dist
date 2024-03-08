@@ -18,7 +18,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Symfony Pokemon API Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
