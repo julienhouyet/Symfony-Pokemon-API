@@ -12,10 +12,8 @@ class AppFixtures extends Fixture
 {
 	public function load(ObjectManager $manager): void
 	{
-		// Créer un utilisateur admin
 		$this->createAdminUser();
 
-		// Créer des types et des pokemons
 		TypeFactory::createMany(10);
 		PokemonFactory::createMany(40, function () {
 			return [

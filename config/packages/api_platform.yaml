@@ -9,6 +9,7 @@ api_platform:
       access_token:
         name: Authorization
         type: header
+  keep_legacy_inflector: false
   # docs_formats:
   #   jsonld: ["application/ld+json"]
   #   jsonopenapi: ["application/vnd.openapi+json"]

@@ -27,17 +27,17 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 	description: 'The Pokemon List',
 	operations: [
 		new Get(
-			uriTemplate: '/pokemon/{id}',
+			uriTemplate: '/pokemons/{id}',
 			security: 'is_granted("PUBLIC_ACCESS")'
 		),
 		new GetCollection(
-			uriTemplate: '/pokemon',
+			uriTemplate: '/pokemons',
 			security: 'is_granted("PUBLIC_ACCESS")'
 		),
-		new Post(uriTemplate: '/pokemon/{id}'),
-		new Put(uriTemplate: '/pokemon/{id}'),
-		new Patch(uriTemplate: '/pokemon/{id}'),
-		new Delete(uriTemplate: '/pokemon/{id}'),
+		new Post(uriTemplate: '/pokemons/{id}'),
+		new Put(uriTemplate: '/pokemons/{id}'),
+		new Patch(uriTemplate: '/pokemons/{id}'),
+		new Delete(uriTemplate: '/pokemons/{id}'),
 	],
 	normalizationContext: ['groups' => ['pokemon:read']],
 	denormalizationContext: ['groups' => ['pokemon:write']],
