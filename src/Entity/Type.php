@@ -31,8 +31,7 @@ use ApiPlatform\Metadata\Put;
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['type:read']],
-	denormalizationContext: ['groups' => ['type:write']],
-	security: 'is_granted("ROLE_ADMIN")'
+	denormalizationContext: ['groups' => ['type:write']]
 )]
 class Type
 {

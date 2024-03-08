@@ -34,7 +34,9 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 			uriTemplate: '/pokemons',
 			security: 'is_granted("PUBLIC_ACCESS")'
 		),
-		new Post(uriTemplate: '/pokemons/{id}'),
+		new Post(
+			uriTemplate: '/pokemons'
+		),
 		new Put(uriTemplate: '/pokemons/{id}'),
 		new Patch(uriTemplate: '/pokemons/{id}'),
 		new Delete(uriTemplate: '/pokemons/{id}'),
