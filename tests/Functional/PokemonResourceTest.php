@@ -38,6 +38,17 @@ class PokemonResourceTest extends ApiTestCase
 			->assertJsonMatches('"hydra:totalItems"', 40);
 	}
 
+	public function testGetPokemon(): void
+	{
+		$pokemon = PokemonFactory::createOne();
+
+		$this->browser()
+			->get('/api/pokemons/' . $pokemon->getId())
+			->dump()
+			->assertJson()
+			->assertStatus(200);
+	}
+
 	public function testPostToPokemon(): void
 	{
 		$user = UserFactory::createOne([
@@ -54,21 +65,21 @@ class PokemonResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($user)
 			->post('/api/pokemons', HttpOptions::json([
-				'name' => 'Pikachu',
+				'name' => 'pikachu',
 				'height' => 1.23,
 				'weight' => 2.34,
 				'baseExperience' => 64,
 			]))
 			->dump()
 			->assertStatus(201)
-			->assertJsonMatches('name', 'Pikachu');
+			->assertJsonMatches('name', 'pikachu');
 
 		$type = TypeFactory::createOne();
 
 		$this->browser()
 			->actingAs($user)
 			->post('/api/pokemons', HttpOptions::json([
-				'name' => 'Charmander',
+				'name' => 'charmander',
 				'height' => 0.6,
 				'weight' => 8.5,
 				'baseExperience' => 62,
@@ -76,6 +87,81 @@ class PokemonResourceTest extends ApiTestCase
 			]))
 			->dump()
 			->assertStatus(201)
-			->assertJsonMatches('name', 'Charmander');
+			->assertJsonMatches('name', 'charmander');
+	}
+
+	public function testPutPokemon(): void
+	{
+		$user = UserFactory::createOne([
+			'roles' => ['ROLE_ADMIN'],
+			'password' => 'pass',
+		]);
+
+		$pokemon = PokemonFactory::createOne([
+			'name' => 'bulbasaur',
+			'height' => 0.7,
+			'weight' => 6.9,
+			'baseExperience' => 64,
+		]);
+
+		$this->browser()
+			->actingAs($user)
+			->put('/api/pokemons/' . $pokemon->getId(), HttpOptions::json([
+				'name' => 'ivysaur',
+				'height' => 1.0,
+				'weight' => 13.0,
+				'baseExperience' => 142,
+			]))
+			->assertStatus(200)
+			->assertJsonMatches('name', 'ivysaur');
+	}
+
+	public function testPatchPokemon(): void
+	{
+		$user = UserFactory::createOne([
+			'roles' => ['ROLE_ADMIN'],
+			'password' => 'pass',
+		]);
+
+		$pokemon = PokemonFactory::createOne([
+			'name' => 'charmander',
+			'height' => 0.6,
+			'weight' => 8.5,
+			'baseExperience' => 142,
+		]);
+
+		$this->browser()
+			->actingAs($user)
+			->patch('/api/pokemons/' . $pokemon->getId(), [
+				'headers' => [
+					'Content-Type' => 'application/merge-patch+json',
+				],
+				'json' => [
+					'baseExperience' => 62,
+				],
+			])
+			->dump()
+			->assertStatus(200)
+			->assertJsonMatches('baseExperience', 62);
+	}
+
+	public function testDeletePokemon(): void
+	{
+		$user = UserFactory::createOne([
+			'roles' => ['ROLE_ADMIN'],
+			'password' => 'pass',
+		]);
+
+		$pokemon = PokemonFactory::createOne();
+
+		$this->browser()
+			->actingAs($user)
+			->delete('/api/pokemons/' . $pokemon->getId())
+			->assertStatus(204);
+
+		$this->browser()
+			->actingAs($user)
+			->get('/api/pokemons/' . $pokemon->getId())
+			->assertStatus(404);
 	}
 }
