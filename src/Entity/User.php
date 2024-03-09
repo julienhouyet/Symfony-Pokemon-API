@@ -76,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Assert\NotBlank]
 	private ?string $username = null;
 
-	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist'])]
+	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist', 'remove'])]
 	private Collection $apiTokens;
 
 	#[ORM\PrePersist]

@@ -106,18 +106,18 @@ class UserResourceTest extends ApiTestCase
 			->assertJsonMatches('username', 'randomuser');
 	}
 
-	// public function testDeleteUser(): void
-	// {
-	// 	$userTest = UserFactory::createOne();
+	public function testDeleteUser(): void
+	{
+		$userTest = UserFactory::createOne();
 
-	// 	$this->browser()
-	// 		->actingAs($this->adminUser)
-	// 		->delete('/api/users/' . $userTest->getId())
-	// 		->assertStatus(204);
+		$this->browser()
+			->actingAs($this->adminUser)
+			->delete('/api/users/' . $userTest->getId())
+			->assertStatus(204);
 
-	// 	$this->browser()
-	// 		->actingAs($this->adminUser)
-	// 		->get('/api/users/' . $userTest->getId())
-	// 		->assertStatus(404);
-	// }
+		$this->browser()
+			->actingAs($this->adminUser)
+			->get('/api/users/' . $userTest->getId())
+			->assertStatus(404);
+	}
 }
