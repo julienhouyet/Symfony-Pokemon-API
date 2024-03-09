@@ -55,7 +55,6 @@ MYSQL_HOST=choose_host
 MYSQL_DATABASE=choose_database
 MYSQL_USER=choose_login
 MYSQL_PASSWORD=choose_pass
-MYSQL_ROOT_PASSWORD=root
 ```
 
 You can generate a APP_SECRET [on coderstoolbox website](https://coderstoolbox.online/toolbox/generate-symfony-secret).
