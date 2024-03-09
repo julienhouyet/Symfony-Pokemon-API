@@ -1,3 +1,20 @@
+# 0.4.0 (2024-03-09)
+
+
+### Bug Fixes
+
+* error 500 if i post a pokemon with a missing element ([61f0031](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/61f00318866d98339c4f0e21286219830cab8a90))
+
+
+### Features
+
+* automatic token deletion when user is deleted ([75e763f](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/75e763f13bc1df49d60c6aba2db1126256512f96))
+* create user permission test ([7bfb1ff](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/7bfb1ff9d12b978af70322dd6b55eef45ade074f))
+* create UserHashPasswordStateProcessor ([add9a36](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/add9a36dcc3008e6c9eac130a6371827bf12a589))
+* update access permissions for Users, Pokemons & Types ([cc133c9](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/cc133c99b6e6db3ac3179efad77e2d234968bb4c))
+
+
+
 # 0.3.0 (2024-03-08)
 
 ### Features
