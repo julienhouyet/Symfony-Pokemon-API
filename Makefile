@@ -1,4 +1,4 @@
-.PHONY: run re stop test fixture
+.PHONY: run re start stop test fixture
 
 run:
 	php bin/console cache:clear
@@ -15,6 +15,9 @@ re:
 	npm install
 	docker-compose -f docker/dev/docker-compose.yml up --build -d
 	yarn run watch
+
+start:
+	docker-compose -f docker/dev/docker-compose.yml up -d
 
 stop:
 	docker-compose -f docker/dev/docker-compose.yml down
