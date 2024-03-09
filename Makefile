@@ -26,7 +26,7 @@ rebuild:
 	@echo "${YELLOW}Stopping containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml down
 	@echo "${YELLOW}Clearing cache...${NC}"
-	php bin/console cache:clear
+	symfony php bin/console cache:clear
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
 	npm install
@@ -58,10 +58,10 @@ stop:
 
 fixture:
 	@echo "${YELLOW}Loading fixtures...${NC}"
-	php bin/console doctrine:fixtures:load
+	symfony php bin/console doctrine:fixtures:load
 
 test:
 	@echo "${YELLOW}Running PHPUnit tests...${NC}"
-	php ./vendor/bin/phpunit
+	symfony php bin/phpunit
 
 .PHONY: help rebuild setup start stop test fixture

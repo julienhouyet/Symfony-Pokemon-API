@@ -20,6 +20,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Serializer\Filter\PropertyFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 #[ApiResource(
@@ -63,6 +64,7 @@ class Pokemon
 	 */
 	#[ORM\Column(length: 255)]
 	#[Groups(['pokemon:read', 'pokemon:write', 'type:read'])]
+	#[Assert\NotBlank]
 	private ?string $name = null;
 
 	/**
@@ -70,6 +72,7 @@ class Pokemon
 	 */
 	#[ORM\Column]
 	#[Groups(['pokemon:read', 'pokemon:write'])]
+	#[Assert\NotBlank]
 	private ?float $height = null;
 
 	/**
@@ -77,6 +80,7 @@ class Pokemon
 	 */
 	#[ORM\Column]
 	#[Groups(['pokemon:read', 'pokemon:write'])]
+	#[Assert\NotBlank]
 	private ?float $weight = null;
 
 	/**
@@ -84,6 +88,7 @@ class Pokemon
 	 */
 	#[ORM\Column]
 	#[Groups(['pokemon:read', 'pokemon:write'])]
+	#[Assert\NotBlank]
 	private ?int $baseExperience = null;
 
 	/**

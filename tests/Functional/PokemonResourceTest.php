@@ -62,7 +62,7 @@ class PokemonResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json(['']))
-			->assertStatus(500);
+			->assertStatus(422);
 
 		$this->browser()
 			->actingAs($this->adminUser)

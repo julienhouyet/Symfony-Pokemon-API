@@ -51,7 +51,7 @@ class TypeResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($this->adminUser)
 			->post('/api/types', HttpOptions::json(['']))
-			->assertStatus(500);
+			->assertStatus(422);
 
 		$this->browser()
 			->actingAs($this->adminUser)
