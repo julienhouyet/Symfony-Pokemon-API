@@ -23,10 +23,10 @@ help:
 	@echo "  ${GREEN}test\t\t\t${NC} Run PHPUnit tests"
 
 rebuild:
-	@echo "${YELLOW}Clearing cache...${NC}"
-	php bin/console cache:clear
 	@echo "${YELLOW}Stopping containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml down
+	@echo "${YELLOW}Clearing cache...${NC}"
+	php bin/console cache:clear
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
 	npm install
