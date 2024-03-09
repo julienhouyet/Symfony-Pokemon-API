@@ -8,7 +8,7 @@ VERSION=0.3.0
 LATEST_VERSION = $(shell curl -s "https://api.github.com/repos/julienhouyet/Symfony-Pokemon-API/releases?per_page=1" | grep tag_name | sed 's/.*: "\(.*\)",/\1/' | sed 's/v//')
 
 help:
-	@echo "\nWelcome to ${GREEN}Symfony Pokemon API${NC} version ${VERSION} (c) 2024 Julien Houyet\n"
+	@echo "\nWelcome to ${GREEN}Symfony Pokemon API${NC} version ${YELLOW}${VERSION}${NC} (c) 2024 Julien Houyet\n"
 	@if [ "$(VERSION)" != "$(LATEST_VERSION)" ]; then \
 		echo "${RED}Version $(VERSION) is obsolete. The latest version is $(LATEST_VERSION).\n${NC}"; \
 	fi
