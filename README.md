@@ -89,11 +89,11 @@ Each command helps with different aspects of development and maintenance of the 
   3. Installs dependencies through Composer and npm to update any PHP and JavaScript packages the project depends on.
   4. Rebuilds and restarts the Docker containers to apply changes. This is particularly useful when you've made changes to Docker configurations or when you want to ensure that all components are updated and in sync.
 
-- `make fixture` loads fixtures into the database, which is essential for initializing the database with a predefined set of data for testing or development purposes. This command is crucial for ensuring that your application can run with a known state of data.
+- `make fixture` loads fixtures into the database, which is essential for initializing the database with a predefined set of data for testing or development purposes. This command is crucial for ensuring that the application can run with a known state of data.
 
-- `make test` runs PHPUnit tests, allowing you to verify that your application's functionality remains intact after changes. Running tests is a critical part of the development process, ensuring code quality and preventing regressions.
+- `make test` runs PHPUnit tests, allowing you to verify that the application's functionality remains intact after changes. Running tests is a critical part of the development process, ensuring code quality and preventing regressions.
 
-Each of these commands is designed to simplify the development workflow and ensure a smooth experience when working with the Symfony-Pokemon-API project.
+Each of these commands is designed to simplify the development workflow and ensure a smooth experience when working with the Symfony Pokemon API project.
 
 
 ##  :camera: Gallery
