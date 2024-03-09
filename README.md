@@ -75,6 +75,15 @@ make start
 
 This command starts all necessary Docker containers.
 
+To launch fixture data in database, use:
+```shell
+make fixture
+```
+
+Finaly, go to : [http://localhost:8002/](http://localhost:8002/)
+
+Enjoy !
+
 ###  :package: Other Commands
 
 Each command helps with different aspects of development and maintenance of the project:
