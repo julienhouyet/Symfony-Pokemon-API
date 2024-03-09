@@ -1,6 +1,4 @@
-# CHANGELOG
-
-## v0.3.0 (2024-03-08)
+# 0.3.0 (2024-03-08)
 
 ### Features
 
@@ -20,7 +18,7 @@
 * remove scopes temporarily ([1148c8c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/1148c8cd9d3c56c52db51020aa179932676e6893))
 * update access rules for Pokemon resource ([57a317c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/57a317ce972a853fd5ab5c2232972fe7a5fff7b8))
 
-## v0.2.0 (2024-03-07)
+# 0.2.0 (2024-03-07)
 
 ### Features
 
@@ -35,7 +33,7 @@
 * handling authentification errors ([1867770](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/1867770a2b76df5f80830745c43b0a9a1479f9d6))
 * handling authentification success ([a5fd252](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/a5fd25289aba587802a10842a1a8477d9ce6fbd5))
 
-## v0.1.0 (2024-03-04)
+# 0.1.0 (2024-03-04)
 
 ### Features
 
