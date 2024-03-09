@@ -21,7 +21,6 @@ class UserPermissionsTest extends ApiTestCase
 
 		$this->publicUser = UserFactory::createOne([
 			'username' => 'publicuser',
-			'roles' => [],
 			'password' => 'pass',
 		])->object();
 	}

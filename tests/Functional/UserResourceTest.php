@@ -19,10 +19,7 @@ class UserResourceTest extends ApiTestCase
 	{
 		parent::setUp();
 
-		$this->adminUser = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		])->object();
+		$this->adminUser = UserFactory::new()->withRoles(['ROLE_ADMIN'])->create();
 	}
 
 	public function testGetCollectionOfUsers(): void
