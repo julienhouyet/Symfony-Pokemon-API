@@ -19,10 +19,7 @@ class PokemonResourceTest extends ApiTestCase
 	{
 		parent::setUp();
 
-		$this->adminUser = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		])->object();
+		$this->adminUser = UserFactory::new()->asAdmin()->create();
 	}
 
 	public function testGetCollectionOfPokemons(): void
@@ -62,7 +59,7 @@ class PokemonResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json(['']))
-			->assertStatus(500);
+			->assertStatus(422);
 
 		$this->browser()
 			->actingAs($this->adminUser)

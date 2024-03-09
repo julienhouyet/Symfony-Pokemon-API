@@ -17,6 +17,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
 #[ApiResource(
@@ -31,7 +32,8 @@ use ApiPlatform\Metadata\Put;
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['type:read']],
-	denormalizationContext: ['groups' => ['type:write']]
+	denormalizationContext: ['groups' => ['type:write']],
+	security: 'is_granted("ROLE_ADMIN")'
 )]
 class Type
 {
@@ -49,6 +51,7 @@ class Type
 	 */
 	#[ORM\Column(length: 255)]
 	#[Groups(['type:read', 'type:write', 'pokemon:read'])]
+	#[Assert\NotBlank]
 	private ?string $name = null;
 
 	/**
