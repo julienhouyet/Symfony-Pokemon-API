@@ -35,9 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 			uriTemplate: '/pokemons',
 			security: 'is_granted("PUBLIC_ACCESS")'
 		),
-		new Post(
-			uriTemplate: '/pokemons'
-		),
+		new Post(uriTemplate: '/pokemons'),
 		new Put(uriTemplate: '/pokemons/{id}'),
 		new Patch(uriTemplate: '/pokemons/{id}'),
 		new Delete(uriTemplate: '/pokemons/{id}'),

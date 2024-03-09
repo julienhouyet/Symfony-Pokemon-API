@@ -32,7 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['type:read']],
-	denormalizationContext: ['groups' => ['type:write']]
+	denormalizationContext: ['groups' => ['type:write']],
+	security: 'is_granted("ROLE_ADMIN")'
 )]
 class Type
 {

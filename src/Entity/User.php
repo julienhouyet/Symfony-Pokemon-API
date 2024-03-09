@@ -24,11 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
 	shortName: 'User',
 	operations: [
-		new Get(),
+		new Get(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
 		new GetCollection(),
-		new Post(),
-		new Put(),
-		new Patch(),
+		new Post(
+			security: 'is_granted("PUBLIC_ACCESS")'
+		),
+		new Put(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
+		new Patch(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['user:read']],
