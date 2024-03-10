@@ -1,6 +1,31 @@
-# CHANGELOG
+# 0.5.0 (2024-03-10)
 
-## v0.3.0 (2024-03-08)
+### Features
+
+
+* add filter on entities ([5a11130](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/5a111306dbc4fc13bbd3243573b5ba73606390ac))
+* update .env.local & .env.test.local with make command ([c5b6df1](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/c5b6df1ae6651f3ec3ea3b361cc67350332aaea8))
+
+
+
+# 0.4.0 (2024-03-09)
+
+
+### Bug Fixes
+
+* error 500 if i post a pokemon with a missing element ([61f0031](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/61f00318866d98339c4f0e21286219830cab8a90))
+
+
+### Features
+
+* automatic token deletion when user is deleted ([75e763f](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/75e763f13bc1df49d60c6aba2db1126256512f96))
+* create user permission test ([7bfb1ff](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/7bfb1ff9d12b978af70322dd6b55eef45ade074f))
+* create UserHashPasswordStateProcessor ([add9a36](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/add9a36dcc3008e6c9eac130a6371827bf12a589))
+* update access permissions for Users, Pokemons & Types ([cc133c9](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/cc133c99b6e6db3ac3179efad77e2d234968bb4c))
+
+
+
+# 0.3.0 (2024-03-08)
 
 ### Features
 
@@ -20,7 +45,7 @@
 * remove scopes temporarily ([1148c8c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/1148c8cd9d3c56c52db51020aa179932676e6893))
 * update access rules for Pokemon resource ([57a317c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/57a317ce972a853fd5ab5c2232972fe7a5fff7b8))
 
-## v0.2.0 (2024-03-07)
+# 0.2.0 (2024-03-07)
 
 ### Features
 
@@ -35,7 +60,7 @@
 * handling authentification errors ([1867770](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/1867770a2b76df5f80830745c43b0a9a1479f9d6))
 * handling authentification success ([a5fd252](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/a5fd25289aba587802a10842a1a8477d9ce6fbd5))
 
-## v0.1.0 (2024-03-04)
+# 0.1.0 (2024-03-04)
 
 ### Features
 

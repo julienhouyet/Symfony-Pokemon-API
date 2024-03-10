@@ -19,10 +19,7 @@ class UserResourceTest extends ApiTestCase
 	{
 		parent::setUp();
 
-		$this->adminUser = UserFactory::createOne([
-			'roles' => ['ROLE_ADMIN'],
-			'password' => 'pass',
-		])->object();
+		$this->adminUser = UserFactory::new()->asAdmin()->create();
 	}
 
 	public function testGetCollectionOfUsers(): void
@@ -106,18 +103,18 @@ class UserResourceTest extends ApiTestCase
 			->assertJsonMatches('username', 'randomuser');
 	}
 
-	// public function testDeleteUser(): void
-	// {
-	// 	$userTest = UserFactory::createOne();
+	public function testDeleteUser(): void
+	{
+		$userTest = UserFactory::createOne();
 
-	// 	$this->browser()
-	// 		->actingAs($this->adminUser)
-	// 		->delete('/api/users/' . $userTest->getId())
-	// 		->assertStatus(204);
+		$this->browser()
+			->actingAs($this->adminUser)
+			->delete('/api/users/' . $userTest->getId())
+			->assertStatus(204);
 
-	// 	$this->browser()
-	// 		->actingAs($this->adminUser)
-	// 		->get('/api/users/' . $userTest->getId())
-	// 		->assertStatus(404);
-	// }
+		$this->browser()
+			->actingAs($this->adminUser)
+			->get('/api/users/' . $userTest->getId())
+			->assertStatus(404);
+	}
 }

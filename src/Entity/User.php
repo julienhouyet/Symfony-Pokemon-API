@@ -2,39 +2,55 @@
 
 namespace App\Entity;
 
+use App\Entity\ApiToken;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource(
 	shortName: 'User',
 	operations: [
-		new Get(),
+		new Get(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
 		new GetCollection(),
-		new Post(),
-		new Put(),
-		new Patch(),
+		new Post(
+			security: 'is_granted("PUBLIC_ACCESS")'
+		),
+		new Put(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
+		new Patch(
+			security: 'is_granted("ROLE_ADMIN") or (object and object == user)'
+		),
 		new Delete()
 	],
 	normalizationContext: ['groups' => ['user:read']],
 	denormalizationContext: ['groups' => ['user:write']],
 	security: 'is_granted("ROLE_ADMIN")'
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+	'email' => 'partial',
+	'username' => 'partial'
+])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username.')]
 #[ORM\HasLifecycleCallbacks]
@@ -68,15 +84,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @var string The hashed password
 	 */
 	#[ORM\Column]
-	#[Groups(['user:write'])]
 	private ?string $password = null;
+
+	#[Groups(['user:write'])]
+	#[SerializedName('password')]
+	private ?string $plainPassword = null;
 
 	#[ORM\Column(length: 255, unique: true)]
 	#[Groups(['user:read', 'user:write'])]
 	#[Assert\NotBlank]
 	private ?string $username = null;
 
-	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist'])]
+	#[ORM\OneToMany(mappedBy: 'ownedBy', targetEntity: ApiToken::class, cascade: ['persist', 'remove'])]
 	private Collection $apiTokens;
 
 	#[ORM\PrePersist]
@@ -166,10 +185,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->password;
 	}
 
-	public function setPassword(string $password): static
+	public function setPassword(string $password): self
 	{
 		$this->password = $password;
-
 		return $this;
 	}
 
@@ -179,7 +197,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function eraseCredentials(): void
 	{
 		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
+		$this->plainPassword = null;
 	}
 
 	public function getUsername(): ?string
@@ -238,5 +256,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	public function markAsTokenAuthenticated(array $scopes)
 	{
 		$this->accessTokenScopes = $scopes;
+	}
+
+	public function setPlainPassword(string $plainPassword): User
+	{
+		$this->plainPassword = $plainPassword;
+		return $this;
+	}
+	public function getPlainPassword(): ?string
+	{
+		return $this->plainPassword;
 	}
 }
