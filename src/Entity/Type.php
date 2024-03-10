@@ -3,20 +3,19 @@
 namespace App\Entity;
 
 use App\Entity\Pokemon;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TypeRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
-use ApiPlatform\Serializer\Filter\PropertyFilter;
-use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TypeRepository::class)]
@@ -35,6 +34,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 	denormalizationContext: ['groups' => ['type:write']],
 	security: 'is_granted("ROLE_ADMIN")'
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+	'name' => 'partial'
+])]
 class Type
 {
 
@@ -58,7 +60,7 @@ class Type
 	 * The Pokemons with this type
 	 */
 	#[ORM\ManyToMany(targetEntity: Pokemon::class, mappedBy: 'types')]
-	#[Groups(['type:read', 'type:write'])]
+	//#[Groups(['type:write'])]
 	private Collection $pokemons;
 
 	public function getId(): ?int

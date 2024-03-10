@@ -51,19 +51,17 @@ Update the following settings in `.env.local` and `.env.test.local`:
 
 ```
 APP_SECRET=fake_app_secret
-MYSQL_HOST=choose_host
-MYSQL_DATABASE=choose_database
-MYSQL_USER=choose_login
-MYSQL_PASSWORD=choose_pass
 ```
 
 You can generate a APP_SECRET [on coderstoolbox website](https://coderstoolbox.online/toolbox/generate-symfony-secret).
 
-Finally, install the project with the command:
+After, install the project with the command:
 
 ```shell
 make setup
 ```
+
+Finaly, dum
 
 ###  :arrow_forward: Running the Project
 
@@ -75,6 +73,7 @@ make start
 This command starts all necessary Docker containers.
 
 To launch fixture data in database, use:
+
 ```shell
 make fixture
 ```
@@ -97,11 +96,17 @@ Each command helps with different aspects of development and maintenance of the 
   3. Installs dependencies through Composer and npm to update any PHP and JavaScript packages the project depends on.
   4. Rebuilds and restarts the Docker containers to apply changes. This is particularly useful when you've made changes to Docker configurations or when you want to ensure that all components are updated and in sync.
 
-- `make fixture` loads fixtures into the database, which is essential for initializing the database with a predefined set of data for testing or development purposes. This command is crucial for ensuring that the application can run with a known state of data.
-
 - `make test` runs PHPUnit tests, allowing you to verify that the application's functionality remains intact after changes. Running tests is a critical part of the development process, ensuring code quality and preventing regressions.
 
+- `make fixture` loads fixtures into the database, which is essential for initializing the database with a predefined set of data for testing or development purposes. This command is crucial for ensuring that the application can run with a known state of data.
+
+- `make migration` generates a new migration file based on schema changes. It's used to prepare database updates.
+
+- `make migrate` applies the migration to the database, updating its schema according to the latest changes.
+
 Each of these commands is designed to simplify the development workflow and ensure a smooth experience when working with the Symfony Pokemon API project.
+
+fixture, migration and migrate operate outside of Docker by temporarily adjusting the MYSQL_HOST environment variable to 0.0.0.0, allowing for external database access during their execution. This ensures seamless operation even in environments where direct database access requires specific configurations.
 
 
 ##  :camera: Gallery
