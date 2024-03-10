@@ -1,3 +1,13 @@
+# 0.5.0 (2024-03-10)
+
+### Features
+
+
+* add filter on entities ([5a11130](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/5a111306dbc4fc13bbd3243573b5ba73606390ac))
+* update .env.local & .env.test.local with make command ([c5b6df1](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/c5b6df1ae6651f3ec3ea3b361cc67350332aaea8))
+
+
+
 # 0.4.0 (2024-03-09)
 
 
