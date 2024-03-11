@@ -98,9 +98,14 @@ class Pokemon
 	#[Groups(['pokemon:read'])]
 	private Collection $pokemonTypes;
 
+	#[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: PokemonStat::class)]
+	#[Groups(['pokemon:read'])]
+	private Collection $pokemonStats;
+
 	public function __construct()
 	{
 		$this->pokemonTypes = new ArrayCollection();
+		$this->pokemonStats = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -194,6 +199,36 @@ class Pokemon
 	public function setPokedexNumber(int $pokedexNumber): static
 	{
 		$this->pokedexNumber = $pokedexNumber;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, PokemonStat>
+	 */
+	public function getPokemonStats(): Collection
+	{
+		return $this->pokemonStats;
+	}
+
+	public function addPokemonStat(PokemonStat $pokemonStat): static
+	{
+		if (!$this->pokemonStats->contains($pokemonStat)) {
+			$this->pokemonStats->add($pokemonStat);
+			$pokemonStat->setPokemon($this);
+		}
+
+		return $this;
+	}
+
+	public function removePokemonStat(PokemonStat $pokemonStat): static
+	{
+		if ($this->pokemonStats->removeElement($pokemonStat)) {
+			// set the owning side to null (unless already changed)
+			if ($pokemonStat->getPokemon() === $this) {
+				$pokemonStat->setPokemon(null);
+			}
+		}
 
 		return $this;
 	}
