@@ -72,14 +72,18 @@ final class PokemonFactory extends ModelFactory
 	 */
 	protected function getDefaults(): array
 	{
+		static $pokedexNumber = 1;
 
 		$uniquePokemons = array_slice(array_unique(self::POKEMON_NAMES), 0, count(array_unique(self::POKEMON_NAMES)));
 
+		$pokedexNumberValue = $pokedexNumber++;
+
 		return [
-			'baseExperience' => self::faker()->randomNumber(3, 0),
+			'baseExperience' => self::faker()->randomNumber(3, false),
 			'height' => self::faker()->randomFloat(3, 0, 999.99),
 			'name' => self::faker()->randomElement($uniquePokemons),
 			'weight' => self::faker()->randomFloat(3, 0, 999.99),
+			'pokedexNumber' => $pokedexNumberValue,
 		];
 	}
 

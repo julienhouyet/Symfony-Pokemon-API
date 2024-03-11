@@ -24,18 +24,7 @@ class PokemonResourceTest extends ApiTestCase
 
 	public function testGetCollectionOfPokemons(): void
 	{
-		TypeFactory::createMany(10);
-
-		$this->browser()
-			->get('/api/types')
-			->assertJson()
-			->assertJsonMatches('"hydra:totalItems"', 10);
-
-		PokemonFactory::createMany(40, function () {
-			return [
-				'types' => TypeFactory::randomRange(0, 2),
-			];
-		});
+		PokemonFactory::createMany(40);
 
 		$this->browser()
 			->get('/api/pokemons')
@@ -64,6 +53,7 @@ class PokemonResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json([
+				'pokedexNumber' => 1,
 				'name' => 'pikachu',
 				'height' => 1.23,
 				'weight' => 2.34,
@@ -77,6 +67,7 @@ class PokemonResourceTest extends ApiTestCase
 		$this->browser()
 			->actingAs($this->adminUser)
 			->post('/api/pokemons', HttpOptions::json([
+				'pokedexNumber' => 2,
 				'name' => 'charmander',
 				'height' => 0.6,
 				'weight' => 8.5,

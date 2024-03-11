@@ -2,27 +2,27 @@
 
 namespace App\Entity;
 
-use App\Entity\Pokemon;
+use App\Entity\PokemonStat;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\TypeRepository;
+use App\Repository\StatRepository;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: TypeRepository::class)]
+#[ORM\Entity(repositoryClass: StatRepository::class)]
 #[ApiResource(
-	shortName: 'Type',
-	description: 'Different types of Pokemon',
+	shortName: 'Stat',
+	description: 'Different stats of Pokemon',
 	operations: [
 		new Get(security: 'is_granted("PUBLIC_ACCESS")'),
 		new GetCollection(security: 'is_granted("PUBLIC_ACCESS")'),
@@ -31,38 +31,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Patch(),
 		new Delete()
 	],
-	normalizationContext: ['groups' => ['type:read']],
-	denormalizationContext: ['groups' => ['type:write']],
+	normalizationContext: ['groups' => ['stat:read']],
+	denormalizationContext: ['groups' => ['stat:write']],
 	security: 'is_granted("ROLE_ADMIN")'
 )]
 #[ApiFilter(SearchFilter::class, properties: [
 	'name' => 'partial'
 ])]
-class Type
+class Stat
 {
-
-	/**
-	 * The ID of the type
-	 */
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column]
 	private ?int $id = null;
 
-	/**
-	 * The Name of the type
-	 */
 	#[ORM\Column(length: 255)]
-	#[Groups(['type:read', 'type:write', 'pokemon:read'])]
+	#[Groups(['stat:read', 'stat:write', 'pokemon:read'])]
 	#[Assert\NotBlank]
 	private ?string $name = null;
 
-	#[ORM\OneToMany(mappedBy: 'type', targetEntity: PokemonType::class)]
-	private Collection $pokemonTypes;
+	#[ORM\OneToMany(mappedBy: 'stat', targetEntity: PokemonStat::class)]
+	private Collection $pokemonStats;
 
 	public function __construct()
 	{
-		$this->pokemonTypes = new ArrayCollection();
+		$this->pokemonStats = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -83,29 +76,29 @@ class Type
 	}
 
 	/**
-	 * @return Collection<int, PokemonType>
+	 * @return Collection<int, PokemonStat>
 	 */
-	public function getPokemonTypes(): Collection
+	public function getPokemonStats(): Collection
 	{
-		return $this->pokemonTypes;
+		return $this->pokemonStats;
 	}
 
-	public function addPokemonType(PokemonType $pokemonType): static
+	public function addPokemonStat(PokemonStat $pokemonStat): static
 	{
-		if (!$this->pokemonTypes->contains($pokemonType)) {
-			$this->pokemonTypes->add($pokemonType);
-			$pokemonType->setType($this);
+		if (!$this->pokemonStats->contains($pokemonStat)) {
+			$this->pokemonStats->add($pokemonStat);
+			$pokemonStat->setStat($this);
 		}
 
 		return $this;
 	}
 
-	public function removePokemonType(PokemonType $pokemonType): static
+	public function removePokemonStat(PokemonStat $pokemonStat): static
 	{
-		if ($this->pokemonTypes->removeElement($pokemonType)) {
+		if ($this->pokemonStats->removeElement($pokemonStat)) {
 			// set the owning side to null (unless already changed)
-			if ($pokemonType->getType() === $this) {
-				$pokemonType->setType(null);
+			if ($pokemonStat->getStat() === $this) {
+				$pokemonStat->setStat(null);
 			}
 		}
 
