@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TypeRepository;
 use ApiPlatform\Metadata\ApiFilter;
@@ -56,12 +57,13 @@ class Type
 	#[Assert\NotBlank]
 	private ?string $name = null;
 
-	/**
-	 * The Pokemons with this type
-	 */
-	#[ORM\ManyToMany(targetEntity: Pokemon::class, mappedBy: 'types')]
-	//#[Groups(['type:write'])]
-	private Collection $pokemons;
+	#[ORM\OneToMany(mappedBy: 'type', targetEntity: PokemonType::class)]
+	private Collection $pokemonTypes;
+
+	public function __construct()
+	{
+		$this->pokemonTypes = new ArrayCollection();
+	}
 
 	public function getId(): ?int
 	{
@@ -81,27 +83,30 @@ class Type
 	}
 
 	/**
-	 * @return Collection<int, Pokemon>
+	 * @return Collection<int, PokemonType>
 	 */
-	public function getPokemons(): Collection
+	public function getPokemonTypes(): Collection
 	{
-		return $this->pokemons;
+		return $this->pokemonTypes;
 	}
 
-	public function addPokemon(Pokemon $pokemon): static
+	public function addPokemonType(PokemonType $pokemonType): static
 	{
-		if (!$this->pokemons->contains($pokemon)) {
-			$this->pokemons->add($pokemon);
-			$pokemon->addType($this);
+		if (!$this->pokemonTypes->contains($pokemonType)) {
+			$this->pokemonTypes->add($pokemonType);
+			$pokemonType->setType($this);
 		}
 
 		return $this;
 	}
 
-	public function removePokemon(Pokemon $pokemon): static
+	public function removePokemonType(PokemonType $pokemonType): static
 	{
-		if ($this->pokemons->removeElement($pokemon)) {
-			$pokemon->removeType($this);
+		if ($this->pokemonTypes->removeElement($pokemonType)) {
+			// set the owning side to null (unless already changed)
+			if ($pokemonType->getType() === $this) {
+				$pokemonType->setType(null);
+			}
 		}
 
 		return $this;

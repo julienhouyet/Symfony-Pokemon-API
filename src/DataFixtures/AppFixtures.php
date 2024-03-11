@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Factory\TypeFactory;
 use App\Factory\UserFactory;
 use App\Factory\PokemonFactory;
+use App\Factory\PokemonTypeFactory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -15,11 +16,21 @@ class AppFixtures extends Fixture
 		$this->createAdminUser();
 
 		TypeFactory::createMany(10);
-		PokemonFactory::createMany(40, function () {
-			return [
-				'types' => TypeFactory::randomRange(0, 2),
-			];
-		});
+		PokemonFactory::createMany(40);
+
+		$pokemons = PokemonFactory::repository()->findAll();
+		foreach ($pokemons as $pokemon) {
+			$numberOfTypes = random_int(1, 2);
+
+			for ($slot = 1; $slot <= $numberOfTypes; $slot++) {
+				PokemonTypeFactory::createOne([
+					'pokemon' => $pokemon,
+					'slot' => $slot,
+				]);
+			}
+		}
+
+		$manager->flush();
 
 		UserFactory::createMany(10);
 

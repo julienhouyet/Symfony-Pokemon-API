@@ -41,9 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	security: 'is_granted("ROLE_ADMIN")'
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-	'name' => 'partial',
-	'types.id' => 'exact',
-	'types.name' => 'partial',
+	'name' => 'partial'
 ])]
 
 class Pokemon
@@ -57,10 +55,18 @@ class Pokemon
 	private ?int $id = null;
 
 	/**
+	 * The Pokedex Number of the Pokemon
+	 */
+	#[ORM\Column(unique: true)]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
+	#[Assert\NotBlank]
+	private ?int $pokedexNumber = null;
+
+	/**
 	 * The Name of the Pokemon
 	 */
 	#[ORM\Column(length: 255)]
-	#[Groups(['pokemon:read', 'pokemon:write', 'type:read'])]
+	#[Groups(['pokemon:read', 'pokemon:write'])]
 	#[Assert\NotBlank]
 	private ?string $name = null;
 
@@ -88,16 +94,13 @@ class Pokemon
 	#[Assert\NotBlank]
 	private ?int $baseExperience = null;
 
-	/**
-	 * The Types of the Pokemon
-	 */
-	#[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'pokemons')]
-	#[Groups(['pokemon:read', 'pokemon:write'])]
-	private Collection $types;
+	#[ORM\OneToMany(mappedBy: 'pokemon', targetEntity: PokemonType::class)]
+	#[Groups(['pokemon:read'])]
+	private Collection $pokemonTypes;
 
 	public function __construct()
 	{
-		$this->types = new ArrayCollection();
+		$this->pokemonTypes = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -154,25 +157,43 @@ class Pokemon
 	}
 
 	/**
-	 * @return Collection<int, Type>
+	 * @return Collection<int, PokemonType>
 	 */
-	public function getTypes(): Collection
+	public function getPokemonTypes(): Collection
 	{
-		return $this->types;
+		return $this->pokemonTypes;
 	}
 
-	public function addType(Type $type): static
+	public function addPokemonType(PokemonType $pokemonType): static
 	{
-		if (!$this->types->contains($type)) {
-			$this->types->add($type);
+		if (!$this->pokemonTypes->contains($pokemonType)) {
+			$this->pokemonTypes->add($pokemonType);
+			$pokemonType->setPokemon($this);
 		}
 
 		return $this;
 	}
 
-	public function removeType(Type $type): static
+	public function removePokemonType(PokemonType $pokemonType): static
 	{
-		$this->types->removeElement($type);
+		if ($this->pokemonTypes->removeElement($pokemonType)) {
+			// set the owning side to null (unless already changed)
+			if ($pokemonType->getPokemon() === $this) {
+				$pokemonType->setPokemon(null);
+			}
+		}
+
+		return $this;
+	}
+
+	public function getPokedexNumber(): ?int
+	{
+		return $this->pokedexNumber;
+	}
+
+	public function setPokedexNumber(int $pokedexNumber): static
+	{
+		$this->pokedexNumber = $pokedexNumber;
 
 		return $this;
 	}
