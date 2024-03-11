@@ -4,7 +4,7 @@ YELLOW=\033[0;33m
 BLUE=\033[0;34m
 NC=\033[0m
 
-VERSION=0.4.0
+VERSION=0.5.0
 LATEST_VERSION = $(shell curl -s "https://api.github.com/repos/julienhouyet/Symfony-Pokemon-API/releases?per_page=1" | grep tag_name | sed 's/.*: "\(.*\)",/\1/' | sed 's/v//')
 
 help:
