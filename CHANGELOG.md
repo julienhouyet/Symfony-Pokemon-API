@@ -1,3 +1,24 @@
+# 0.6.0 (2024-03-11)
+
+
+### Features
+
+* add Pokemon stats support ([76376ab](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/76376ab888ea17e1f032a29e38ed40a3d21ffb4e))
+* add tests for Stats ([a373a4c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/a373a4c6d74ceda3b6a3e3a3b724dde6027cebb1))
+* better Pokemon Type structure ([ca3a4de](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/ca3a4de5041a0355f5e2c1639dd945a5f6a49ef5))
+
+
+
+# 0.5.0 (2024-03-10)
+
+### Features
+
+
+* add filter on entities ([5a11130](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/5a111306dbc4fc13bbd3243573b5ba73606390ac))
+* update .env.local & .env.test.local with make command ([c5b6df1](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/c5b6df1ae6651f3ec3ea3b361cc67350332aaea8))
+
+
+
 # 0.4.0 (2024-03-09)
 
 
