@@ -95,7 +95,7 @@ class Move
 		return $this->power;
 	}
 
-	public function setPower(int $power): static
+	public function setPower(?int $power): static
 	{
 		$this->power = $power;
 

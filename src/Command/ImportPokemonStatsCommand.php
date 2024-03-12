@@ -52,7 +52,7 @@ class ImportPokemonStatsCommand extends Command
 		fgetcsv($fileHandle);
 
 		while (($data = fgetcsv($fileHandle, 1000, ";")) !== FALSE) {
-			$pokemonType = new PokemonStat();
+			$pokemonStat = new PokemonStat();
 
 			$pokemon = $this->entityManager->getRepository(Pokemon::class)->find($data[0]);
 			if (!$pokemon) {
@@ -66,12 +66,12 @@ class ImportPokemonStatsCommand extends Command
 				continue;
 			}
 
-			$pokemonType->setPokemon($pokemon);
-			$pokemonType->setStat($stat);
-			$pokemonType->setBaseStat($data[2]);
-			$pokemonType->setEffort($data[3]);
+			$pokemonStat->setPokemon($pokemon);
+			$pokemonStat->setStat($stat);
+			$pokemonStat->setBaseStat($data[2]);
+			$pokemonStat->setEffort($data[3]);
 
-			$this->entityManager->persist($pokemonType);
+			$this->entityManager->persist($pokemonStat);
 		}
 
 		$this->entityManager->flush();
