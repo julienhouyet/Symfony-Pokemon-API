@@ -63,6 +63,13 @@ fixture:
 	@echo "${YELLOW}Loading fixtures...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
 
+fixture-reset:
+	@echo "${YELLOW}Reset database & loading fixtures...${NC}"
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:drop --force
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:create
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
+
 migration:
 	@echo "${YELLOW}Prepare migration...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console make:migration
