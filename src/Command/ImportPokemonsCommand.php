@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Stat;
+use App\Entity\Pokemon;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,10 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-	name: 'import:stats',
+	name: 'import:pokemons',
 	description: 'Add a short description for your command',
 )]
-class ImportStatsCommand extends Command
+class ImportPokemonsCommand extends Command
 {
 	private EntityManagerInterface $entityManager;
 
@@ -36,9 +36,9 @@ class ImportStatsCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$io = new SymfonyStyle($input, $output);
-		$io->title('Starting stats import from CSV');
+		$io->title('Starting pokemon import from CSV');
 
-		$csvFilePath = 'assets/csv/stats.csv';
+		$csvFilePath = 'assets/csv/pokemons.csv';
 		$fileHandle = fopen($csvFilePath, 'r');
 		if (!$fileHandle) {
 			$io->error('The file could not be opened.');
@@ -50,10 +50,14 @@ class ImportStatsCommand extends Command
 		fgetcsv($fileHandle);
 
 		while (($data = fgetcsv($fileHandle, 1000, ";")) !== FALSE) {
-			$type = new Stat();
-			$type->setName($data[1]);
+			$pokemon = new Pokemon();
+			$pokemon->setPokedexNumber($data[1]);
+			$pokemon->setName($data[2]);
+			$pokemon->setHeight($data[3]);
+			$pokemon->setWeight($data[4]);
+			$pokemon->setBaseExperience($data[5]);
 
-			$this->entityManager->persist($type);
+			$this->entityManager->persist($pokemon);
 		}
 
 		$this->entityManager->flush();
