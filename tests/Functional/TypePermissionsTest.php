@@ -2,12 +2,12 @@
 
 namespace App\Tests\Functional;
 
-use App\Factory\StatFactory;
+use App\Factory\TypeFactory;
 use App\Factory\UserFactory;
 use Zenstruck\Browser\HttpOptions;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
-class StatPermissionsTest extends ApiTestCase
+class TypePermissionsTest extends ApiTestCase
 {
 	use ResetDatabase;
 
@@ -23,113 +23,115 @@ class StatPermissionsTest extends ApiTestCase
 		])->object();
 	}
 
-	public function testGuestCannotPostToStat(): void
+	public function testGuestCannotPostToType(): void
 	{
+
 		$this->browser()
-			->post('/api/stats', HttpOptions::json([
-				'name' => 'special-attack'
+			->post('/api/types', HttpOptions::json([
+				'name' => 'electric'
 			]))
 			->assertStatus(401)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testUserCannotPostToStat(): void
+	public function testUserCannotPostToType(): void
 	{
+
 		$this->browser()
 			->actingAs($this->publicUser)
-			->post('/api/stats', HttpOptions::json([
-				'name' => 'special-attack'
+			->post('/api/types', HttpOptions::json([
+				'name' => 'electric'
 			]))
 			->assertStatus(403)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testGuestCannotPutStat(): void
+	public function testGuestCannotPutType(): void
 	{
 
-		$stat = StatFactory::createOne([
+		$type = TypeFactory::createOne([
 			'name' => 'electric'
 		]);
 
 		$this->browser()
-			->put('/api/stats/' . $stat->getId(), HttpOptions::json([
+			->put('/api/types/' . $type->getId(), HttpOptions::json([
 				'name' => 'poison'
 			]))
 			->assertStatus(401)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testUserCannotPutStat(): void
+	public function testUserCannotPutType(): void
 	{
 
-		$stat = StatFactory::createOne([
+		$type = TypeFactory::createOne([
 			'name' => 'electric'
 		]);
 
 		$this->browser()
 			->actingAs($this->publicUser)
-			->put('/api/stats/' . $stat->getId(), HttpOptions::json([
+			->put('/api/types/' . $type->getId(), HttpOptions::json([
 				'name' => 'poison'
 			]))
 			->assertStatus(403)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testGuestCannotPatchStat(): void
+	public function testGuestCannotPatchType(): void
 	{
-		$stat = StatFactory::createOne([
-			'name' => 'self-attack',
+		$type = TypeFactory::createOne([
+			'name' => 'charmander',
 		]);
 
 		$this->browser()
-			->patch('/api/stats/' . $stat->getId(), [
+			->patch('/api/types/' . $type->getId(), [
 				'headers' => [
 					'Content-Type' => 'application/merge-patch+json',
 				],
 				'json' => [
-					'name' => 'self-defense',
+					'name' => 'charmeleon',
 				],
 			])
 			->assertStatus(401)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testUserCannotPatchStat(): void
+	public function testUserCannotPatchType(): void
 	{
-		$stat = StatFactory::createOne([
-			'name' => 'self-attack',
+		$type = TypeFactory::createOne([
+			'name' => 'charmander',
 		]);
 
 		$this->browser()
 			->actingAs($this->publicUser)
-			->patch('/api/stats/' . $stat->getId(), [
+			->patch('/api/types/' . $type->getId(), [
 				'headers' => [
 					'Content-Type' => 'application/merge-patch+json',
 				],
 				'json' => [
-					'name' => 'self-defense',
+					'name' => 'charmeleon',
 				],
 			])
 			->assertStatus(403)
 			->assertJsonMatches('name', null);
 	}
 
-	public function testGuestCannotDeleteStat(): void
+	public function testGuestCannotDeleteType(): void
 	{
-		$stat = StatFactory::createOne();
+		$type = TypeFactory::createOne();
 
 		$this->browser()
-			->delete('/api/stats/' . $stat->getId())
+			->delete('/api/types/' . $type->getId())
 			->assertStatus(401);
 	}
 
-	public function testUserCannotDeleteStat(): void
+	public function testUserCannotDeleteType(): void
 	{
-		$stat = StatFactory::createOne();
+		$type = TypeFactory::createOne();
 
 		$this->browser()
 			->actingAs($this->publicUser)
-			->delete('/api/stats/' . $stat->getId())
+			->delete('/api/types/' . $type->getId())
 			->assertStatus(403);
 	}
 }
