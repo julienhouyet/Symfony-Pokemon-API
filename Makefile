@@ -63,12 +63,13 @@ fixture:
 	@echo "${YELLOW}Loading fixtures...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
 
-fixture-reset:
+import:
 	@echo "${YELLOW}Reset database & loading fixtures...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:drop --force
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:create
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
-	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:types
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:stats
 
 migration:
 	@echo "${YELLOW}Prepare migration...${NC}"
@@ -82,4 +83,4 @@ test:
 	@echo "${YELLOW}Running PHPUnit tests...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/phpunit
 
-.PHONY: help rebuild setup start stop test fixture migrate migration
+.PHONY: help rebuild setup start stop test fixture import migrate migration
