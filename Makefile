@@ -64,7 +64,7 @@ fixture:
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
 
 import:
-	@echo "${YELLOW}Reset database & loading fixtures...${NC}"
+	@echo "${YELLOW}Reset database & import pokemon data...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:drop --force
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:create
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
