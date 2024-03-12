@@ -42,9 +42,8 @@ setup:
 	composer install
 	npm install
 	@echo "${YELLOW}Building and starting containers...${NC}"
-	docker-compose -f docker/dev/docker-compose.yml up --build -d
-	@echo "${YELLOW}Watching for changes...${NC}"
-	yarn run watch
+	docker-compose -f docker/dev/docker-compose.yml build
+	@echo "\n\nInstallation complete, run ${GREEN}make start${NC} to launch the project.\n"
 
 start:
 	@if [ ! -d "vendor" ] || [ ! -d "node_modules" ]; then \
@@ -53,68 +52,27 @@ start:
 	fi
 	@echo "${YELLOW}Starting containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml up -d
+	@echo "${YELLOW}Watching for changes...${NC}"
+	yarn run watch
 
 stop:
 	@echo "${YELLOW}Stopping containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml down
 
 fixture:
-	@echo "${YELLOW}Checking MYSQL_HOST in .env.local...${NC}"
-	@if grep -q 'MYSQL_HOST=mysql' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=mysql/MYSQL_HOST=0.0.0.0/' .env.local; \
-		echo "${GREEN}MYSQL_HOST changed to 0.0.0.0 for loading fixtures.${NC}"; \
-	fi
 	@echo "${YELLOW}Loading fixtures...${NC}"
-	symfony php bin/console doctrine:fixtures:load
-	@if grep -q 'MYSQL_HOST=0.0.0.0' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=0.0.0.0/MYSQL_HOST=mysql/' .env.local; \
-		echo "${GREEN}MYSQL_HOST reverted to mysql after loading fixtures.${NC}"; \
-		rm .env.local.bak; \
-		echo "${GREEN}Backup file removed.${NC}"; \
-	fi
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
 
 migration:
-	@echo "${YELLOW}Checking MYSQL_HOST in .env.local...${NC}"
-	@if grep -q 'MYSQL_HOST=mysql' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=mysql/MYSQL_HOST=0.0.0.0/' .env.local; \
-		echo "${GREEN}MYSQL_HOST changed to 0.0.0.0 for migration.${NC}"; \
-	fi
 	@echo "${YELLOW}Prepare migration...${NC}"
-	symfony php bin/console make:migration
-	@if grep -q 'MYSQL_HOST=0.0.0.0' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=0.0.0.0/MYSQL_HOST=mysql/' .env.local; \
-		echo "${GREEN}MYSQL_HOST reverted to mysql after migration.${NC}"; \
-		rm .env.local.bak; \
-		echo "${GREEN}Backup file removed.${NC}"; \
-	fi
+	docker exec -it symfony-pokemon-api-php-1 php bin/console make:migration
 
 migrate:
-	@echo "${YELLOW}Checking MYSQL_HOST in .env.local...${NC}"
-	@if grep -q 'MYSQL_HOST=mysql' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=mysql/MYSQL_HOST=0.0.0.0/' .env.local; \
-		echo "${GREEN}MYSQL_HOST changed to 0.0.0.0 for migration.${NC}"; \
-	fi
 	@echo "${YELLOW}Prepare migrate...${NC}"
-	symfony php bin/console doctrine:migrations:migrate
-	@if grep -q 'MYSQL_HOST=0.0.0.0' .env.local; then \
-		sed -i'.bak' 's/MYSQL_HOST=0.0.0.0/MYSQL_HOST=mysql/' .env.local; \
-		echo "${GREEN}MYSQL_HOST reverted to mysql after migration.${NC}"; \
-		rm .env.local.bak; \
-		echo "${GREEN}Backup file removed.${NC}"; \
-	fi
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:migrations:migrate
 
 test:
-	@echo "${YELLOW}Checking .env.test.local...${NC}"
-	@if [ ! -f .env.test.local ]; then \
-		echo "${RED}.env.test.local file does not exist. Please create and configure it before running tests.${NC}"; \
-		exit 1; \
-	else \
-		if grep -q 'MYSQL_HOST=choose_host' .env.test.local || grep -q 'MYSQL_DATABASE=choose_database' .env.test.local || grep -q 'MYSQL_USER=choose_login' .env.test.local || grep -q 'MYSQL_PASSWORD=choose_pass' .env.test.local; then \
-			echo "${RED}Please update .env.test.local with valid database credentials before running tests.${NC}"; \
-			exit 1; \
-		fi; \
-	fi
 	@echo "${YELLOW}Running PHPUnit tests...${NC}"
-	symfony php bin/phpunit
+	docker exec -it symfony-pokemon-api-php-1 php bin/phpunit
 
-.PHONY: help rebuild setup start stop test fixture
+.PHONY: help rebuild setup start stop test fixture migrate migration
