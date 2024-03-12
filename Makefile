@@ -70,7 +70,9 @@ import:
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
 	docker exec -it symfony-pokemon-api-php-1 php bin/console import:types
 	docker exec -it symfony-pokemon-api-php-1 php bin/console import:stats
-	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemons
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon-types
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon-stats
 
 migration:
 	@echo "${YELLOW}Prepare migration...${NC}"
