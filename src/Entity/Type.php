@@ -53,7 +53,7 @@ class Type
 	 * The Name of the type
 	 */
 	#[ORM\Column(length: 255)]
-	#[Groups(['type:read', 'type:write', 'pokemon:read'])]
+	#[Groups(['type:read', 'type:write', 'pokemon:read', 'move:read'])]
 	#[Assert\NotBlank]
 	private ?string $name = null;
 
