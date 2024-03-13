@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MoveRepository::class)]
 #[ApiResource(
-	shortName: 'Moves',
+	shortName: 'Move',
 	description: 'Different moves of Pokemon',
 	operations: [
 		new Get(security: 'is_granted("PUBLIC_ACCESS")'),
@@ -63,6 +63,7 @@ class Move
 	private ?int $accuracy = null;
 
 	#[ORM\ManyToOne(inversedBy: 'moves')]
+	#[Groups(['move:read', 'move:write', 'pokemon:read'])]
 	private ?Type $Type = null;
 
 	#[ORM\OneToMany(mappedBy: 'Move', targetEntity: PokemonMove::class)]
