@@ -68,6 +68,7 @@ import:
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:drop --force
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:create
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:users
 	docker exec -it symfony-pokemon-api-php-1 php bin/console import:types
 	docker exec -it symfony-pokemon-api-php-1 php bin/console import:stats
 	docker exec -it symfony-pokemon-api-php-1 php bin/console import:moves
