@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - /var/www/api.pokedexia.com/docker/prod/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt/live/api.pokedexia.com/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
+      - /etc/letsencrypt/live/api.pokedexia.com/privkey.pem:/etc/ssl/private/privkey.pem:ro
+      - symfony_data:/var/www/symfony:ro
+    depends_on:
+      - php
+    ports:
+      - '${SERVER_IP}:80:80'
+      - '${SERVER_IP}:443:443'
+    restart: always
+
   php:
     build:
       context: ../../
@@ -16,7 +30,7 @@ services:
     env_file: 
       - ../../.env 
     ports:
-      - "3306:3306"
+      - "${SERVER_IP}:3306:3306"
     restart: always
 
   phpmyadmin:
@@ -24,11 +38,21 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "8080:80"
+      - "${SERVER_IP}:8081:80"
     depends_on:
       - db
+    restart: always
+
+  node:
+    image: node:latest
+    volumes:
+      - symfony_data:/var/www/symfony
+    working_dir: /var/www/symfony
+    command: >
+      sh -c "yarn install && yarn build"
+    depends_on:
+      - php
     restart: always
 
 volumes:
