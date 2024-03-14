@@ -18,7 +18,7 @@ services:
   php:
     build:
       context: ../../
-      dockerfile: docker/prod/Dockerfile.php
+      dockerfile: docker/prod/Dockerfile
     volumes:
       - symfony_data:/var/www/symfony
     restart: always
@@ -30,7 +30,7 @@ services:
     env_file: 
       - ../../.env 
     ports:
-      - "${SERVER_IP}:3306:3306"
+      - "3307:3306"
     restart: always
 
   phpmyadmin:
@@ -39,20 +39,9 @@ services:
       PMA_HOST: db
       PMA_PORT: 3306
     ports:
-      - "${SERVER_IP}:8081:80"
+      - "8081:80"
     depends_on:
       - db
-    restart: always
-
-  node:
-    image: node:latest
-    volumes:
-      - symfony_data:/var/www/symfony
-    working_dir: /var/www/symfony
-    command: >
-      sh -c "yarn install && yarn build"
-    depends_on:
-      - php
     restart: always
 
 volumes:

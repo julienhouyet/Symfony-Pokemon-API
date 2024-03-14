@@ -31,7 +31,7 @@ rebuild:
 	symfony php bin/console cache:clear
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
-	npm install
+	yarn install
 	@echo "${YELLOW}Building and starting containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml up --build -d
 	@echo "${YELLOW}Watching for changes...${NC}"
@@ -40,7 +40,7 @@ rebuild:
 setup:
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
-	npm install
+	yarn install
 	@echo "${YELLOW}Building and starting containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml build
 	@echo "\n\nInstallation complete, run ${GREEN}make start${NC} to launch the project.\n"
