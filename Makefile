@@ -4,7 +4,7 @@ YELLOW=\033[0;33m
 BLUE=\033[0;34m
 NC=\033[0m
 
-VERSION=0.6.0
+VERSION=0.7.0
 LATEST_VERSION = $(shell curl -s "https://api.github.com/repos/julienhouyet/Symfony-Pokemon-API/releases?per_page=1" | grep tag_name | sed 's/.*: "\(.*\)",/\1/' | sed 's/v//')
 
 help:
@@ -31,7 +31,7 @@ rebuild:
 	symfony php bin/console cache:clear
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
-	npm install
+	yarn install
 	@echo "${YELLOW}Building and starting containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml up --build -d
 	@echo "${YELLOW}Watching for changes...${NC}"
@@ -40,7 +40,7 @@ rebuild:
 setup:
 	@echo "${YELLOW}Installing dependencies...${NC}"
 	composer install
-	npm install
+	yarn install
 	@echo "${YELLOW}Building and starting containers...${NC}"
 	docker-compose -f docker/dev/docker-compose.yml build
 	@echo "\n\nInstallation complete, run ${GREEN}make start${NC} to launch the project.\n"
@@ -63,6 +63,20 @@ fixture:
 	@echo "${YELLOW}Loading fixtures...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:fixtures:load
 
+import:
+	@echo "${YELLOW}Reset database & import pokemon data...${NC}"
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:drop --force
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:database:create
+	docker exec -it symfony-pokemon-api-php-1 php bin/console doctrine:schema:create
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:users
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:types
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:stats
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:moves
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemons
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon-types
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon-stats
+	docker exec -it symfony-pokemon-api-php-1 php bin/console import:pokemon-moves
+
 migration:
 	@echo "${YELLOW}Prepare migration...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/console make:migration
@@ -75,4 +89,4 @@ test:
 	@echo "${YELLOW}Running PHPUnit tests...${NC}"
 	docker exec -it symfony-pokemon-api-php-1 php bin/phpunit
 
-.PHONY: help rebuild setup start stop test fixture migrate migration
+.PHONY: help rebuild setup start stop test fixture import migrate migration

@@ -102,10 +102,15 @@ class Pokemon
 	#[Groups(['pokemon:read'])]
 	private Collection $pokemonStats;
 
+	#[ORM\OneToMany(mappedBy: 'Pokemon', targetEntity: PokemonMove::class)]
+	#[Groups(['pokemon:read'])]
+	private Collection $pokemonMoves;
+
 	public function __construct()
 	{
 		$this->pokemonTypes = new ArrayCollection();
 		$this->pokemonStats = new ArrayCollection();
+		$this->pokemonMoves = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -227,6 +232,36 @@ class Pokemon
 			// set the owning side to null (unless already changed)
 			if ($pokemonStat->getPokemon() === $this) {
 				$pokemonStat->setPokemon(null);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, PokemonMove>
+	 */
+	public function getPokemonMoves(): Collection
+	{
+		return $this->pokemonMoves;
+	}
+
+	public function addPokemonMove(PokemonMove $pokemonMove): static
+	{
+		if (!$this->pokemonMoves->contains($pokemonMove)) {
+			$this->pokemonMoves->add($pokemonMove);
+			$pokemonMove->setPokemon($this);
+		}
+
+		return $this;
+	}
+
+	public function removePokemonMove(PokemonMove $pokemonMove): static
+	{
+		if ($this->pokemonMoves->removeElement($pokemonMove)) {
+			// set the owning side to null (unless already changed)
+			if ($pokemonMove->getPokemon() === $this) {
+				$pokemonMove->setPokemon(null);
 			}
 		}
 

@@ -53,16 +53,20 @@ class Type
 	 * The Name of the type
 	 */
 	#[ORM\Column(length: 255)]
-	#[Groups(['type:read', 'type:write', 'pokemon:read'])]
+	#[Groups(['type:read', 'type:write', 'pokemon:read', 'move:read'])]
 	#[Assert\NotBlank]
 	private ?string $name = null;
 
 	#[ORM\OneToMany(mappedBy: 'type', targetEntity: PokemonType::class)]
 	private Collection $pokemonTypes;
 
+	#[ORM\OneToMany(mappedBy: 'Type', targetEntity: Move::class)]
+	private Collection $moves;
+
 	public function __construct()
 	{
 		$this->pokemonTypes = new ArrayCollection();
+		$this->moves = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -106,6 +110,36 @@ class Type
 			// set the owning side to null (unless already changed)
 			if ($pokemonType->getType() === $this) {
 				$pokemonType->setType(null);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Move>
+	 */
+	public function getMoves(): Collection
+	{
+		return $this->moves;
+	}
+
+	public function addMove(Move $move): static
+	{
+		if (!$this->moves->contains($move)) {
+			$this->moves->add($move);
+			$move->setType($this);
+		}
+
+		return $this;
+	}
+
+	public function removeMove(Move $move): static
+	{
+		if ($this->moves->removeElement($move)) {
+			// set the owning side to null (unless already changed)
+			if ($move->getType() === $this) {
+				$move->setType(null);
 			}
 		}
 

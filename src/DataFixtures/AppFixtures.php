@@ -2,10 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Factory\MoveFactory;
 use App\Factory\StatFactory;
 use App\Factory\TypeFactory;
 use App\Factory\UserFactory;
 use App\Factory\PokemonFactory;
+use App\Factory\PokemonMoveFactory;
 use App\Factory\PokemonStatFactory;
 use App\Factory\PokemonTypeFactory;
 use Doctrine\Persistence\ObjectManager;
@@ -19,9 +21,11 @@ class AppFixtures extends Fixture
 
 		TypeFactory::createMany(10);
 		StatFactory::createMany(8);
+		MoveFactory::createMany(40);
 		PokemonFactory::createMany(40);
 
 		$stats = StatFactory::repository()->findAll();
+		$moves = MoveFactory::repository()->findAll();
 		$pokemons = PokemonFactory::repository()->findAll();
 
 		foreach ($pokemons as $pokemon) {
@@ -42,6 +46,16 @@ class AppFixtures extends Fixture
 				PokemonStatFactory::createOne([
 					'pokemon' => $pokemon,
 					'stat' => $stat,
+				]);
+			}
+
+			$numberOfMoves = random_int(1, 6);
+			$selectedMoves = array_slice($moves, 0, $numberOfMoves);
+
+			foreach ($selectedMoves as $move) {
+				PokemonMoveFactory::createOne([
+					'pokemon' => $pokemon,
+					'move' => $move,
 				]);
 			}
 		}

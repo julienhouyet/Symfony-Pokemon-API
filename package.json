@@ -1,6 +1,6 @@
 {
 	"name": "symfony-pokemon-api",
-	"version": "v0.6.0",
+	"version": "v0.7.0",
 	"devDependencies": {
 		"@babel/core": "^7.24.0",
 		"@babel/preset-env": "^7.24.0",
@@ -21,6 +21,7 @@
 		"sass-loader": "^14.0.0",
 		"tailwindcss": "^3.4.1",
 		"ts-loader": "^9.0.0",
+		"typescript": "^5.4.2",
 		"vue": "^3.4.21",
 		"vue-loader": "^17.4.2",
 		"webpack": "^5.90.3",

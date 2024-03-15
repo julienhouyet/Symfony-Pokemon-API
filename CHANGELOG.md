@@ -1,3 +1,45 @@
+# [0.7.0](https://github.com/julienhouyet/Symfony-Pokemon-API/compare/v0.3.0...v0.7.0) (2024-03-15)
+
+
+### Bug Fixes
+
+* add move:read in type ([5c83f08](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/5c83f08ee8cc2b029056a7191f12af9740f7ae74))
+* api move uri ([72df2b6](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/72df2b65c042974e8ce2366571101fdee65ff752))
+* docker prod adjustement ([362615a](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/362615a69f7bd4c2285b6897b93bbc2d5c1b8b1d))
+* docker prod composer ([efba72a](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/efba72a1f8d7a33325375b23fb0d87d12ab32b8c))
+* error 500 if i post a pokemon with a missing element ([61f0031](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/61f00318866d98339c4f0e21286219830cab8a90))
+* second try docker prod ([b9acbd7](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/b9acbd7a043e8db1d3481de3691f0b4ea2a95937))
+
+
+### Features
+
+* add filter on entities ([5a11130](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/5a111306dbc4fc13bbd3243573b5ba73606390ac))
+* add fixture-reset command ([14a9aff](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/14a9affadeabc3e1605051cfc0f23c331d9e5d04))
+* add Move test ([3d2326c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/3d2326c34194f47e4ab9d2da63d5c095becb3d79))
+* add Pokemon stats support ([76376ab](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/76376ab888ea17e1f032a29e38ed40a3d21ffb4e))
+* add tests for Stats ([a373a4c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/a373a4c6d74ceda3b6a3e3a3b724dde6027cebb1))
+* add worflow for ci/cd ([de244da](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/de244daebe8ab68638023ce5cb684b4f232431cb))
+* automatic token deletion when user is deleted ([75e763f](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/75e763f13bc1df49d60c6aba2db1126256512f96))
+* better Pokemon Type structure ([ca3a4de](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/ca3a4de5041a0355f5e2c1639dd945a5f6a49ef5))
+* create admin when import pokemon data ([773e3f1](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/773e3f1fddad33c939599a5ee5e5620622c48239))
+* create Moves Pokemon & fixture & factory ([893ab6c](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/893ab6c649ea7f5f087f116895c2bf7422c6e1c9))
+* create Pokemon import ([d787a10](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/d787a10ec1aacda66158b46d108494c11b36f18d))
+* create Pokemon Moves import ([2025a2e](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/2025a2e4ccad43f7ff655460c8c91976db4a6b7e))
+* create Pokemon permissions tests ([3a87476](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/3a8747690c59a3b2a0a0301a3b6834b00f933ecc))
+* create PokemonTypes & PokemonStats import ([f7cc677](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/f7cc6775539ef2fcf03a1c0db46e156f155b2f6a))
+* create Stat permissions tests ([c75f67d](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/c75f67d75e5dc0d521fef99944d3926fabadedb1))
+* create Type & Stats import ([a24d555](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/a24d5555ef5906abf807a8d7c1b39cda62644c4b))
+* create Type permissions tests ([2897308](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/2897308405b683e2f8793d8478cb55ffe3e4e150))
+* create user permission test ([7bfb1ff](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/7bfb1ff9d12b978af70322dd6b55eef45ade074f))
+* create UserHashPasswordStateProcessor ([add9a36](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/add9a36dcc3008e6c9eac130a6371827bf12a589))
+* finish docker prod ([267e14b](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/267e14bf460779d75c10bfe1f9596379317ceb10))
+* first try docker prod ([e8a4e0e](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/e8a4e0e856e0881022bf9d0fb6d198b4c21419ca))
+* update .env.local & .env.test.local with make command ([c5b6df1](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/c5b6df1ae6651f3ec3ea3b361cc67350332aaea8))
+* update access permissions for Users, Pokemons & Types ([cc133c9](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/cc133c99b6e6db3ac3179efad77e2d234968bb4c))
+* update Pokemon permissions tests ([777768e](https://github.com/julienhouyet/Symfony-Pokemon-API/commit/777768e43dfb1076af2a66c334d235b0a465cc16))
+
+
+
 # 0.6.0 (2024-03-11)
 
 
