@@ -5,9 +5,9 @@ services:
     build:
       context: ../../
       dockerfile: docker/prod/Dockerfile.fpm
-    volumes:
-      - ../../:/app
     restart: always
+    volumes:
+      - symfony_app:/app
 
   nginx:
     image: nginx:alpine
@@ -18,7 +18,7 @@ services:
       - /var/www/api.pokedexia.com/docker/prod/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - /etc/letsencrypt/live/api.pokedexia.com/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
       - /etc/letsencrypt/live/api.pokedexia.com/privkey.pem:/etc/ssl/private/privkey.pem:ro
-      - ../../public:/app/public:ro
+      - symfony_app:/app:ro
     depends_on:
       - fpm
     restart: always
@@ -50,3 +50,4 @@ services:
 
 volumes:
   db_data:
+  symfony_app:

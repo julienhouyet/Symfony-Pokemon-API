@@ -1,5 +1,4 @@
 FROM php:8.2-fpm
-WORKDIR /app
 RUN apt-get update && apt-get install -y \
 	git \
 	zip \
@@ -12,11 +11,14 @@ RUN apt-get update && apt-get install -y \
 	opcache \
 	pdo \
 	pdo_mysql
+RUN docker-php-ext-install intl opcache pdo pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-COPY composer.json composer.lock symfony.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
-	apt-get install -y nodejs
-RUN npm install -g yarn
+    apt-get install -y nodejs && \
+    npm install -g yarn
+WORKDIR /app
 COPY . .
-RUN yarn install && yarn encore production
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN yarn install && yarn build
+EXPOSE 9000
