@@ -22,7 +22,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
           cd /var/www/api.pokedexia.com
           git pull origin main
-          docker compose -f docker/prod/docker-compose.yml down
-          docker compose -f docker/prod/docker-compose.yml build --no-cache
+          docker compose -f docker/prod/docker-compose.yml build
           docker compose -f docker/prod/docker-compose.yml up -d
         EOF
