@@ -3,8 +3,7 @@
 <div align="center">
   
   [![Deploy to Prod](https://github.com/julienhouyet/Symfony-Pokemon-API/actions/workflows/deploy-prod.yml/badge.svg?branch=main)](https://github.com/julienhouyet/Symfony-Pokemon-API/actions/workflows/deploy-prod.yml)
-  
-  <img src="https://img.shields.io/badge/version-0.7.0-blue.svg">
+  ![Static Badge](https://img.shields.io/badge/version-0.7.0-blue)
 </div>
 
 # Introduction
